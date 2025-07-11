@@ -2,28 +2,156 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportPenilaian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-
+use Maatwebsite\Excel\Facades\Excel;
 class LaporanController extends Controller
 {
     public function index(Request $request)
-    {
-        $query = DB::table('request')
-            ->join('users', 'users.id', '=', 'request.user_id')
-            ->select('request.*', 'users.name');
+{
+    $kategori = DB::table('master_kategori_penilaian')->pluck('kategori_penilaian', 'id_kategori');
 
-        if ($request->filled('start_date') && $request->filled('end_date')) {
-            $query->whereBetween('request.tanggal', [$request->start_date, $request->end_date]);
-        }
+    $query = DB::table('master_penilaian')
+        ->join('master_siswa', 'master_siswa.id_siswa', '=', 'master_penilaian.id_siswa')
+        ->join('master_kelas', 'master_kelas.id_kelas', '=', 'master_siswa.id_kelas')
+        ->join('master_jurusan', 'master_jurusan.id_jurusan', '=', 'master_kelas.id_jurusan')
+        ->join('master_pelajaran', 'master_pelajaran.id_pelajaran', '=', 'master_penilaian.id_pelajaran')
+        ->join('master_kategori_penilaian', 'master_kategori_penilaian.id_kategori', '=', 'master_penilaian.id_kategori_penilaian')
+        ->select(
+            'master_siswa.id_siswa',
+            'master_siswa.nama_siswa',
+            'master_siswa.nip',
+            'master_siswa.jenis_kelamin',
+            'master_kelas.nama_kelas',
+            'master_jurusan.nama_jurusan',
+            'master_pelajaran.nama_mapel',
+            'master_penilaian.id_pelajaran',
+            'master_kategori_penilaian.kategori_penilaian',
+            'master_penilaian.nilai'
+        );
 
-        if ($request->filled('status')) {
-            $query->where('request.status', $request->status);
-        }
-
-        $requests = $query->orderBy('request.tanggal', 'desc')->get();
-
-        return view('laporan.index', compact('requests'));
+    // ✅ Filter jika request diisi
+    if ($request->filled('jurusan')) {
+        $query->where('master_kelas.id_jurusan', $request->jurusan);
     }
+    if ($request->filled('kelas')) {
+        $query->where('master_siswa.id_kelas', $request->kelas);
+    }
+    if ($request->filled('mapel')) {
+        $query->where('master_penilaian.id_pelajaran', $request->mapel);
+    }
+
+    $nilaiData = $query->get();
+
+    $laporan = [];
+
+    foreach ($nilaiData as $row) {
+        $id = $row->id_siswa;
+
+        if (!isset($laporan[$id])) {
+            $laporan[$id] = [
+                'nama_siswa' => $row->nama_siswa,
+                'nip' => $row->nip,
+                'jk' => $row->jenis_kelamin,
+                'kelas' => $row->nama_kelas,
+                'mapel' => $row->nama_mapel,
+                'total' => 0,
+                'count' => 0,
+                'rata_rata' => 0,
+            ];
+        }
+
+        $laporan[$id][$row->kategori_penilaian] = $row->nilai;
+        $laporan[$id]['total'] += $row->nilai;
+        $laporan[$id]['count'] += 1;
+    }
+
+    foreach ($laporan as &$data) {
+        $data['rata_rata'] = $data['count'] > 0 ? round($data['total'] / $data['count'], 2) : 0;
+    }
+
+    $laporan = array_values($laporan);
+
+    // Ambil semua list jurusan, kelas, mapel buat dropdown
+    $jurusanList = DB::table('master_jurusan')->get();
+    $kelasList = DB::table('master_kelas')->get();
+    $mapelList = DB::table('master_pelajaran')->get();
+
+    return view('laporan.index', compact('laporan', 'kategori', 'jurusanList', 'kelasList', 'mapelList'));
+}
+
+    public function exportExcel(Request $request)
+{
+    $kategori = DB::table('master_kategori_penilaian')->pluck('kategori_penilaian', 'id_kategori');
+
+    $query = DB::table('master_penilaian')
+        ->join('master_siswa', 'master_siswa.id_siswa', '=', 'master_penilaian.id_siswa')
+        ->join('master_kelas', 'master_kelas.id_kelas', '=', 'master_siswa.id_kelas')
+        ->join('master_jurusan', 'master_jurusan.id_jurusan', '=', 'master_kelas.id_jurusan')
+        ->join('master_pelajaran', 'master_pelajaran.id_pelajaran', '=', 'master_penilaian.id_pelajaran')
+        ->join('master_kategori_penilaian', 'master_kategori_penilaian.id_kategori', '=', 'master_penilaian.id_kategori_penilaian')
+        ->select(
+            'master_siswa.id_siswa',
+            'master_siswa.nama_siswa',
+            'master_siswa.nip',
+            'master_siswa.jenis_kelamin',
+            'master_kelas.nama_kelas',
+            'master_jurusan.nama_jurusan',
+            'master_pelajaran.nama_mapel',
+            'master_penilaian.id_pelajaran',
+            'master_kategori_penilaian.kategori_penilaian',
+            'master_penilaian.nilai'
+        );
+
+    if ($request->filled('jurusan')) {
+        $query->where('master_kelas.id_jurusan', $request->jurusan);
+    }
+    if ($request->filled('kelas')) {
+        $query->where('master_siswa.id_kelas', $request->kelas);
+    }
+    if ($request->filled('mapel')) {
+        $query->where('master_penilaian.id_pelajaran', $request->mapel);
+    }
+
+    $nilaiData = $query->get();
+
+    $laporan = [];
+
+    foreach ($nilaiData as $row) {
+        $id = $row->id_siswa;
+
+        if (!isset($laporan[$id])) {
+            $laporan[$id] = [
+                'nama_siswa' => $row->nama_siswa,
+                'nip' => $row->nip,
+                'jk' => $row->jenis_kelamin,
+                'kelas' => $row->nama_kelas,
+                'mapel' => $row->nama_mapel,
+                'total' => 0,
+                'count' => 0,
+                'rata_rata' => 0,
+            ];
+        }
+
+        $laporan[$id][$row->kategori_penilaian] = $row->nilai;
+        $laporan[$id]['total'] += $row->nilai;
+        $laporan[$id]['count'] += 1;
+    }
+
+    foreach ($laporan as &$data) {
+        $data['rata_rata'] = $data['count'] > 0 ? round($data['total'] / $data['count'], 2) : 0;
+    }
+
+    // Sort dan kasih ranking
+    usort($laporan, fn($a, $b) => $b['total'] <=> $a['total']);
+
+    foreach ($laporan as $i => &$data) {
+        $data['ranking'] = $i + 1;
+    }
+
+    return Excel::download(new ExportPenilaian($laporan, $kategori), 'laporan-penilaian.xlsx');
+}
+
 }

@@ -174,7 +174,7 @@
                                 <div class="ml-auto text-right">
                                     <span class="badge badge-light font-weight-bold py-2 px-3">
                                         <i class="fas fa-shield-alt mr-1"></i>
-                                        <span class="user-role">
+                                        <span class="user-role" style="color: black;">
                                             @if (auth()->user()->role == 0)
                                                 admin
                                             @else
@@ -220,12 +220,12 @@
                                         <i class="fas fa-book-open text-warning"></i>
                                     </div>
                                     <div>
-                                        <h6 class="mb-0 text-muted">Total Pengajuan</h6>
+                                        <h6 class="mb-0 text-muted">Total Guru</h6>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-baseline">
                                     <h3 class="font-weight-bold mb-0">
-
+                                     12
                                     </h3>
                                     <span class="badge badge-soft-warning ml-2">
                                         <i class="fas fa-check-circle"></i>
@@ -234,69 +234,95 @@
                             </div>
                             <div class="card-footer border-0 bg-transparent p-0">
                                 <a href="" class="btn btn-link text-warning btn-block">
-                                    Lihat Pengajuan <i class="fas fa-arrow-right ml-1"></i>
+                                    Kelola Guru <i class="fas fa-arrow-right ml-1"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
-
-                    {{-- Total Approve --}}
                     <div class="col-lg-3 col-md-6 mb-4">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-body p-4">
                                 <div class="d-flex align-items-center mb-3">
                                     <div class="icon-bg bg-success-light rounded-lg p-3 mr-3">
-                                        <i class="fas fa-check-circle text-success"></i>
+                                        <i class="fas fa-book-open text-success"></i>
                                     </div>
                                     <div>
-                                        <h6 class="mb-0 text-muted">Total Di Approve</h6>
+                                        <h6 class="mb-0 text-muted">Total Siswa</h6>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-baseline">
                                     <h3 class="font-weight-bold mb-0">
-
+                                     12
                                     </h3>
                                     <span class="badge badge-soft-success ml-2">
-                                        <i class="fas fa-thumbs-up"></i>
+                                        <i class="fas fa-check-circle"></i>
                                     </span>
                                 </div>
                             </div>
                             <div class="card-footer border-0 bg-transparent p-0">
                                 <a href="" class="btn btn-link text-success btn-block">
-                                    Lihat Data <i class="fas fa-arrow-right ml-1"></i>
+                                    Kelola Siswa <i class="fas fa-arrow-right ml-1"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
-
-                    {{-- Total Reject --}}
                     <div class="col-lg-3 col-md-6 mb-4">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-body p-4">
                                 <div class="d-flex align-items-center mb-3">
-                                    <div class="icon-bg bg-success-light rounded-lg p-3 mr-3">
-                                        <i class="fas fa-times-circle text-success"></i>
+                                    <div class="icon-bg bg-danger-light rounded-lg p-3 mr-3">
+                                        <i class="fas fa-book-open text-danger"></i>
                                     </div>
                                     <div>
-                                        <h6 class="mb-0 text-muted">Total Di Rejected</h6>
+                                        <h6 class="mb-0 text-muted">Total Admin</h6>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-baseline">
                                     <h3 class="font-weight-bold mb-0">
-
+                                     12
                                     </h3>
-                                    <span class="badge badge-success ml-2">
-                                        <i class="fas fa-thumbs-down"></i>
+                                    <span class="badge badge-soft-warning ml-2">
+                                        <i class="fas fa-check-circle"></i>
                                     </span>
                                 </div>
                             </div>
                             <div class="card-footer border-0 bg-transparent p-0">
-                                <a href="" class="btn btn-link text-success btn-block">
-                                    Lihat Data <i class="fas fa-arrow-right ml-1"></i>
+                                <a href="" class="btn btn-link text-danger btn-block">
+                                    Kelola Admin <i class="fas fa-arrow-right ml-1"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-bg bg-waprimaryrning-light rounded-lg p-3 mr-3">
+                                        <i class="fas fa-book-open text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 text-muted">Total Kelas</h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-baseline">
+                                    <h3 class="font-weight-bold mb-0">
+                                     12
+                                    </h3>
+                                    <span class="badge badge-soft-primary ml-2">
+                                        <i class="fas fa-check-circle"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="card-footer border-0 bg-transparent p-0">
+                                <a href="" class="btn btn-link text-primary btn-block">
+                                    Kelola Kelas <i class="fas fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                  
+                   
 
 
                 </div>

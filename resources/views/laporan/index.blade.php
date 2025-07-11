@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Sistem Laporan</h1>
+                        <h1 class="m-0">Sistem Laporan Penilaian</h1>
                     </div>
                 </div>
             </div>
@@ -14,11 +14,10 @@
 
         <section class="content">
             <div class="container-fluid">
-                @if ($requests->isNotEmpty())
-                    <a href="{{ route('laporan_approval.export', request()->query()) }}" class="btn btn-success mb-3">
-                        <i class="fas fa-file-excel"></i> Export Excel
-                    </a>
-                @endif
+                <a href="{{ route('laporan.export.excel', request()->query()) }}" class="btn btn-success mb-3">
+                    <i class="fas fa-file-excel"></i> Export Excel
+                </a>
+
 
 
 
@@ -29,87 +28,85 @@
                     </div>
                     <div class="card-body">
                         <!-- Form Filter -->
-                        <form method="GET" action="{{ route('laporan.index') }}" class="mb-3">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label for="start_date">Dari Tanggal:</label>
-                                    <input type="date" name="start_date" id="start_date" class="form-control"
-                                        value="{{ request('start_date') }}">
+                        <form action="{{ route('laporan.index') }}" method="GET" class="mb-3">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label for="jurusan">Jurusan</label>
+                                        <select name="jurusan" id="jurusan" class="form-control">
+                                            <option value="">-- Semua Jurusan --</option>
+                                            @foreach ($jurusanList as $j)
+                                                <option value="{{ $j->id_jurusan }}" {{ request('jurusan') == $j->id_jurusan ? 'selected' : '' }}>
+                                                    {{ $j->nama_jurusan }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="kelas">Kelas</label>
+                                        <select name="kelas" id="kelas" class="form-control">
+                                            <option value="">-- Semua Kelas --</option>
+                                            @foreach ($kelasList as $k)
+                                                <option value="{{ $k->id_kelas }}" {{ request('kelas') == $k->id_kelas ? 'selected' : '' }}>
+                                                    {{ $k->nama_kelas }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="mapel">Mata Pelajaran</label>
+                                        <select name="mapel" id="mapel" class="form-control">
+                                            <option value="">-- Semua Mapel --</option>
+                                            @foreach ($mapelList as $m)
+                                                <option value="{{ $m->id_pelajaran }}" {{ request('mapel') == $m->id_pelajaran ? 'selected' : '' }}>
+                                                    {{ $m->nama_mapel }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-end">
+                                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-filter"></i> Filter</button>
+                                    </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <label for="end_date">Sampai Tanggal:</label>
-                                    <input type="date" name="end_date" id="end_date" class="form-control"
-                                        value="{{ request('end_date') }}">
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="status">Status:</label>
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="">-- Semua Status --</option>
-                                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>
-                                            Pending</option>
-                                        <option value="approve" {{ request('status') == 'approved' ? 'selected' : '' }}>
-                                            Approved</option>
-                                        <option value="rejecte" {{ request('status') == 'rejected' ? 'selected' : '' }}>
-                                            Rejected</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <br>
-                                    <button type="submit" class="btn btn-primary mt-2">
-                                        <i class="fas fa-filter"></i>
-                                    </button>
-                                    <a href="{{ route('laporan.index') }}" class="btn btn-secondary mt-2">
-                                        <i class="fas fa-sync-alt"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
 
-                        <!-- Tabel Hasil -->
-                        @if ($requests->isNotEmpty())
+                    
+                      
                             <div class="table-responsive">
                                 <table class="table table-hover datatable text-nowrap">
                                     <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Pengaju</th>
-                                            <th>Judul</th>
-                                            <th>Deskripsi</th>
-                                            <th>Status</th>
-                                            <th>Tanggal</th>
-                                            <th>Keterangan</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($requests as $index => $item)
                                             <tr>
-                                                <td>{{ $index + 1 }}</td>
-                                                <td>{{ $item->name }}</td>
-                                                <td>{{ $item->title }}</td>
-                                                <td>{{ $item->desc }}</td>
-                                                <td>
-                                                    <span
-                                                        class="badge 
-                                    {{ $item->status == 'approved' ? 'badge-success' : ($item->status == 'rejected' ? 'badge-danger' : 'badge-warning') }}">
-                                                        {{ ucfirst($item->status) }}
-                                                    </span>
-                                                </td>
-                                                <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}</td>
-                                                <td>{{ $item->keterangan }}</td>
-                                                <td>
-                                                    <a href="{{ route('detail', $item->id) }}" class="btn btn-info btn-sm">
-                                                        <i class="fas fa-eye"></i> Detail
-                                                    </a>
-                                                </td>
+                                                <th>Nama</th>
+                                                <th>NIP</th>
+                                                <th>Jenis Kelamin</th>
+                                                <th>Kelas</th>
+                                                <th>Mata Pelajaran</th>
+                                                @foreach ($kategori as $kategoriNama)
+                                                    <th>{{ $kategoriNama }}</th>
+                                                @endforeach
+                                                <th>Total</th>
+                                                <th>Rata-rata</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($laporan as $siswa)
+                                                <tr>
+                                                    <td>{{ $siswa['nama_siswa'] }}</td>
+                                                    <td>{{ $siswa['nip'] }}</td>
+                                                    <td>{{ $siswa['jk'] }}</td>
+                                                    <td>{{ $siswa['kelas'] }}</td>
+                                                    <td>{{ $siswa['mapel'] }}</td>
+                                                    @foreach ($kategori as $kategoriNama)
+                                                        <td>{{ $siswa[$kategoriNama] ?? '-' }}</td>
+                                                    @endforeach
+                                                    <td>{{ $siswa['total'] }}</td>
+                                                    <td>{{ $siswa['rata_rata'] }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+
                                 </table>
                             </div>
-                        @else
-                            <p class="text-center text-muted">Silakan pilih filter untuk melihat data approval.</p>
-                        @endif
+                      
                     </div>
 
                 </div>

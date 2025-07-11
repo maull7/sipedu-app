@@ -560,170 +560,90 @@
                                 <p>Dashboard</p>
                             </a>
                         </li>
-                        @if (in_array(auth()->user()->role, [1, 2, 3]))
-                            <li class="nav-header">Manajemen Pengajuan</li>
-                            <li
-                                class="nav-item {{ request()->is('master_*') || request()->routeIs('master_*.') ? 'active' : '' }}">
-                                <a href="#"
-                                    class="nav-link {{ request()->is('ajukan-pengajuan') || request()->routeIs('ajukan-pengajuan') ? 'active' : '' }}"
-                                    data-toggle="collapse" data-target="#Pengajuan">
-                                    <i class="fas fa-tags"></i>
-                                    <p>Pengajuan<i class="fas fa-chevron-down float-right"></i></p>
-                                </a>
-                                <ul id="Pengajuan" class="collapse nav flex-column">
-                                    <li class="nav-item">
-                                        <a href="/ajukan-pengajuan"
-                                            class="nav-link {{ request()->is('ajukan-pengajuan') ? 'active' : '' }}">
-                                            <p>
-                                                Formulir Pengajuan
-                                                <i class="fas fa-file-alt"></i>
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="/pengajuan"
-                                            class="nav-link {{ request()->is('pengajuan') ? 'active' : '' }}">
-                                            <p>
-                                                Permohonan & Riwayat<i class="fas fa-inbox"></i>
-                                            </p>
-                                        </a>
-                                    </li>
-
-                                </ul>
-                            </li>
-                        @endif
-                        @if (in_array(auth()->user()->role, [2, 3, 4, 5]))
-                            <li class="nav-header">Panel Persetujuan</li>
-                            <li class="nav-item">
-                                <a href="/verifikasi-pengajuan"
-                                    class="nav-link {{ request()->is('verifikasi-pengajuan') ? 'active' : '' }}">
-                                    <i class="fas fa-check-circle position-relative">
-                                        @if ($notifCount > 0)
-                                            <span
-                                                class="position-absolute top-0 start-100 translate-middle p-1 bg-primary border border-light rounded-circle"
-                                                style="font-size: 0.6rem;"></span>
-                                        @endif
-                                    </i>
-                                    <p>
-                                        Verifikasi Pengajuan
-                                        @if ($notifCount > 0)
-                                            <span class="badge badge-primary ml-1">{{ $notifCount }}</span>
-                                        @endif
-                                    </p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="/pengajuan-approve"
-                                    class="nav-link {{ request()->is('pengajuan-approve') ? 'active' : '' }}">
-                                    <i class="fas fa-thumbs-up"></i>
-                                    <p>Pengajuan Disetujui</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/pengajuan-reject"
-                                    class="nav-link {{ request()->is('pengajuan-reject') ? 'active' : '' }}">
-                                    <i class="fas fa-times-circle"></i>
-                                    <p>Pengajuan Ditolak</p>
-                                </a>
-                            </li>
-                        @endif
-
                         @if (auth()->user()->role == 0)
                             <li class="nav-header">Master</li>
-                            <li
-                                class="nav-item {{ request()->is('master_*') || request()->routeIs('master_*.') ? 'active' : '' }}">
-                                <a href="#"
-                                    class="nav-link {{ request()->is('master_*') || request()->routeIs('master_*.') ? 'active' : '' }}"
-                                    data-toggle="collapse" data-target="#masterMenu">
-                                    <i class="fas fa-cogs"></i>
-                                    <p>Data Master <i class="fas fa-chevron-down float-right"></i></p>
-                                </a>
-                                <ul id="masterMenu" class="collapse nav flex-column">
-                                    <li class="nav-item">
-                                        <a href="/master_tahun"
-                                            class="nav-link {{ request()->is('master_tahun*') ? 'active' : '' }}">
-                                            <p>
-                                                <i class="fas fa-user-shield"></i> Master Tahun
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="/master_jurusan"
-                                            class="nav-link {{ request()->is('master_jurusan*') ? 'active' : '' }}">
-                                            <p>
-                                                <i class="fas fa-user-shield"></i> Master Jurusan
-
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="/master_kelas"
-                                            class="nav-link {{ request()->is('master_kelas') ? 'active' : '' }}">
-                                            <p>
-                                                <i class="fas fa-user-shield"></i> Master Kelas
-
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="/master_siswa"
-                                            class="nav-link {{ request()->is('master_siswa') ? 'active' : '' }}">
-                                            <p>
-                                                <i class="fas fa-user-shield"></i> Master Siswa
-
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="/master_guru"
-                                            class="nav-link {{ request()->is('master_guru') ? 'active' : '' }}">
-                                            <p>
-                                                <i class="fas fa-user-shield"></i> Master Guru
-
-                                            </p>
-                                        </a>
-                                    </li>
+                           <li class="nav-item {{ request()->is('master_*') || request()->routeIs('master_*.') ? 'active' : '' }}">
+                            <a href="#" class="nav-link {{ request()->is('master_*') || request()->routeIs('master_*.') ? 'active' : '' }}"
+                                data-toggle="collapse" data-target="#masterMenu">
+                                <i class="fas fa-cogs"></i>
+                                <p>Data Master <i class="fas fa-chevron-down float-right"></i></p>
+                            </a>
+                            <ul id="masterMenu" class="collapse nav flex-column">
+                                <li class="nav-item">
+                                    <a href="/master_tahun" class="nav-link {{ request()->is('master_tahun*') ? 'active' : '' }}">
+                                        <p><i class="fas fa-calendar-alt"></i> Master Tahun</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/master_jurusan" class="nav-link {{ request()->is('master_jurusan*') ? 'active' : '' }}">
+                                        <p><i class="fas fa-project-diagram"></i> Master Jurusan</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/master_kelas" class="nav-link {{ request()->is('master_kelas') ? 'active' : '' }}">
+                                        <p><i class="fas fa-chalkboard"></i> Master Kelas</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/master_siswa" class="nav-link {{ request()->is('master_siswa') ? 'active' : '' }}">
+                                        <p><i class="fas fa-user-graduate"></i> Master Siswa</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/master_guru" class="nav-link {{ request()->is('master_guru') ? 'active' : '' }}">
+                                        <p><i class="fas fa-chalkboard-teacher"></i> Master Guru</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/master_mapel" class="nav-link {{ request()->is('master_mapel') ? 'active' : '' }}">
+                                        <p><i class="fas fa-book-open"></i> Master Pelajaran</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/master_kategori" class="nav-link {{ request()->is('master_kategori*') ? 'active' : '' }}">
+                                        <p><i class="fas fa-layer-group"></i> Master Kategori</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
 
-                                    <li class="nav-item">
-                                        <a href="/master_kategori"
-                                            class="nav-link {{ request()->is('master_kategori*') ? 'active' : '' }}">
-                                            <p>
-                                                <i class="fas fa-user"></i> Master Kategori
-
-                                            </p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li class="nav-header">Penilaian</li>
-                            <li class="nav-item">
-                                <a href="{{ route('laporan.index') }}"
-                                    class="nav-link {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
-                                    <i class="fas fa-file-invoice"></i>
-                                    <p>Buat Penilaian</p>
-                                </a>
-                            </li>
-                            {{-- <li class="nav-header">Laporan</li>
-                            <li class="nav-item">
-                                <a href="{{ route('laporan.index') }}"
-                                    class="nav-link {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
-                                    <i class="fas fa-file-invoice"></i>
-                                    <p>Laporan</p>
-                                </a>
-                            </li> --}}
-                        @elseif(in_array(auth()->user()->role, [2, 3, 4, 5]))
-                            <li class="nav-header">Laporan</li>
-                            <li class="nav-item">
-                                <a href="{{ route('laporan.index') }}"
-                                    class="nav-link {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
-                                    <i class="fas fa-file-invoice"></i>
-                                    <p>Laporan</p>
-                                </a>
-                            </li>
+                        
                         @endif
+                        <li class="nav-header">Nilai</li>
+                           <li class="nav-item {{ request()->is('penilaian*') || request()->routeIs('penilaian*.') ? 'active' : '' }}">
+                            <a href="#" class="nav-link {{ request()->is('penilaian*') || request()->routeIs('penilaian*.') ? 'active' : '' }}"
+                                data-toggle="collapse" data-target="#masterPenilaian">
+                                <i class="fas fa-chart-line"></i>
+                                <p>Data Penilaian <i class="fas fa-chevron-down float-right"></i></p>
+                            </a>
+                            <ul id="masterPenilaian" class="collapse nav flex-column">
+                                <li class="nav-item">
+                                    <a href="/penilaian" class="nav-link {{ request()->is('penilaian') ? 'active' : '' }}">
+                                        <p>
+                                            <i class="fas fa-list-alt"></i> Nilai Tersedia
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/penilaian/create"
+                                        class="nav-link {{ request()->is('penilaian/create') || request()->is('penilaian/edit/*') ? 'active' : '' }}">
+                                        <p>
+                                            <i class="fas fa-plus-circle"></i> Tambah Nilai
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-header">Laporan</li>
+                            <li class="nav-item">
+                                <a href="/laporan"
+                                    class="nav-link {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
+                                    <i class="fas fa-file-invoice"></i>
+                                    <p>Laporan</p>
+                                </a>
+                            </li>
+
                     </ul>
 
                 </nav>
