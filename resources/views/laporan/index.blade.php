@@ -17,6 +17,9 @@
                 <a href="{{ route('laporan.export.excel', request()->query()) }}" class="btn btn-success mb-3">
                     <i class="fas fa-file-excel"></i> Export Excel
                 </a>
+                <a href="{{ route('laporan.pdf', request()->query()) }}" class="btn btn-danger mb-3">
+                    <i class="fas fa-file-pdf"></i> Export Pdf
+                </a>
 
 
 
@@ -96,12 +99,19 @@
                                                     <td>{{ $siswa['kelas'] }}</td>
                                                     <td>{{ $siswa['mapel'] }}</td>
                                                     @foreach ($kategori as $kategoriNama)
-                                                        <td>{{ $siswa[$kategoriNama] ?? '-' }}</td>
+                                                        <td>
+                                                            @if(isset($siswa[$kategoriNama]))
+                                                                {{ number_format($siswa[$kategoriNama], 2, ',', '.') }}
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </td>
                                                     @endforeach
-                                                    <td>{{ $siswa['total'] }}</td>
-                                                    <td>{{ $siswa['rata_rata'] }}</td>
+                                                    <td>{{ number_format($siswa['total'], 2, ',', '.') }}</td>
+                                                    <td>{{ number_format($siswa['rata_rata'], 2, ',', '.') }}</td>
                                                 </tr>
                                             @endforeach
+
                                         </tbody>
 
                                 </table>

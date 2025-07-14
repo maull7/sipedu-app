@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Exports\TemplateTahun;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Imports\ImportTahun;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MasterTahunAjaranController extends Controller
 {
@@ -93,5 +96,20 @@ class MasterTahunAjaranController extends Controller
     {
         DB::table('master_tahun')->where('id_tahun', $id)->delete();
         return redirect()->back()->with('success', 'Menghapus Tahun Ajaran');
+    }
+
+    public function exportTemplate(){
+          return Excel::download(new TemplateTahun, 'template_tahun_ajaran.xlsx');
+    }
+
+     public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        Excel::import(new ImportTahun, $request->file('file'));
+
+        return redirect()->route('master_tahun.index')->with('success', 'Data Tahun Ajaran berhasil diimpor.');
     }
 }

@@ -27,6 +27,13 @@
                 <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#tambahJurusanModal">
                     Tambah Jurusan
                 </button>
+
+                <a href="{{route('jurusan.template')}}" class="btn btn-warning mb-3">Download Template</a>
+
+                <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#importJurusan">
+                    Import Excel
+                </button>
+                <!-- Tombol Ekspor -->
                 <!-- Tombol Ekspor -->
 
 
@@ -103,6 +110,37 @@
         </section>
     </div>
 
+      <div class="modal fade" id="importJurusan" tabindex="-1" role="dialog" aria-labelledby="importJurusanLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importJurusanLabel">Import Data Jurusan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{route('jurusan.import')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="file">Pilih File Excel</label>
+                            <input type="file" name="file"
+                                class="form-control @error('file') is-invalid @enderror">
+                            @error('file')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- Modal Tambah Jurusan -->
     <div class="modal fade" id="tambahJurusanModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
         aria-hidden="true">

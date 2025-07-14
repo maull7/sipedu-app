@@ -50,19 +50,46 @@ Route::group(['middleware' => 'auth'], function () {
     // Add this route
     Route::post('/master-user/{id}/reset-password', [MasterUserController::class, 'resetPassword'])
         ->name('master_user.reset_password');
-    Route::resource('master_tahun', MasterTahunAjaranController::class);
-    Route::resource('master_jurusan', MasterJurusanController::class);
-    Route::resource('master_kelas', MasterKelasController::class);
-    Route::resource('master_siswa', MasterSiswaController::class);
-    Route::resource('master_guru', MasterGuruController::class);
-    Route::resource('master_kategori', KatergoriPenilaianController::class);
-    Route::resource('master_mapel',MapelController::class);
 
+    //tahun ajaran
+    Route::resource('master_tahun', MasterTahunAjaranController::class);
+    Route::get('template-tahunajaran',[MasterTahunAjaranController::class,'exportTemplate'])->name('tahun.template');
+    Route::post('import-tahun_ajaran',[MasterTahunAjaranController::class,'import'])->name('tahun.import');
+
+    //jurusan
+    Route::resource('master_jurusan', MasterJurusanController::class);
+    Route::get('template-jurusan',[MasterJurusanController::class,'exportTemplate'])->name('jurusan.template');
+    Route::post('import-jurusan',[MasterJurusanController::class,'import'])->name('jurusan.import');
+
+    //kelas
+    Route::resource('master_kelas', MasterKelasController::class);
+    Route::get('template-kelas',[MasterKelasController::class,'exportTemplate'])->name('kelas.template');
+    Route::post('import-kelas',[MasterKelasController::class,'import'])->name('kelas.import');
+
+    //siswa
+    Route::resource('master_siswa', MasterSiswaController::class);
+    Route::get('/template-siswa',[MasterSiswaController::class,'exportTemplate'])->name('siswa.template');
+    Route::post('/import-siswa',[MasterSiswaController::class,'import'])->name('siswa.import');
+
+    //guru
+    Route::resource('master_guru', MasterGuruController::class);
+    Route::get('/template-guru',[MasterGuruController::class,'exportTemplate'])->name('guru.template');
+    Route::post('/import-guru',[MasterGuruController::class,'import'])->name('guru.import');
+
+    Route::resource('master_kategori', KatergoriPenilaianController::class);
+
+    //mapel
+    Route::resource('master_mapel',MapelController::class);
+    Route::get('/template-mapel',[MapelController::class,'exportTemplate'])->name('mapel.template');
+    Route::post('/import-mapel',[MapelController::class,'import'])->name('mapel.import');
     Route::resource('master_jabatan', MasterJabatanController::class);
 
     Route::resource('penilaian',PenilaianController::class);
+
+    //laporan
     Route::get('laporan',[LaporanController::class,'index'])->name('laporan.index');
     Route::get('/laporan/export-excel', [LaporanController::class, 'exportExcel'])->name('laporan.export.excel');
+    Route::get('/export-pdf',[LaporanController::class,'pdf'])->name('laporan.pdf');
 
     //pengguna
     Route::resource('master_pengguna', MasterPenggunaController::class);

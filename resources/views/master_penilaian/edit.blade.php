@@ -14,7 +14,9 @@
 
         <section class="content">
             <div class="container-fluid">
-                <form action="{{ route('penilaian.update', $penilaian->id_penilaian) }}" method="POST" enctype="multipart/form-data">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="{{ route('penilaian.update', $penilaian->id_penilaian) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -80,12 +82,37 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Kep">Nilai Kepribadian</label>
+                                 <input type="text" class="form-control @error('kepribadian') is-invalid @enderror"
+                                    id="Kep" name="kepribadian" required value="{{old('kepribadian',$penilaian->kepribadian)}}"> 
+                                @error('kepribadian')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                        </div>
+
+                         <div class="col-md-6">
+                             <div class="form-group">
+                                <label for="intelek">Nilai Intelektual</label>
+                                <input type="text" class="form-control @error('intelek') is-invalid @enderror"
+                                    id="intelek" name="intelek" required value="{{old('intelek',$penilaian->intelek)}}">
+                                @error('intelek')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">Update</button>
                     </div>
                 </form>
+                    </div>
+                </div>
+                
 
             </div>
         </section>

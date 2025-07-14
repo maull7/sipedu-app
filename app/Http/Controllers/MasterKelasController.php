@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TemplateKelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Imports\KelasImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MasterKelasController extends Controller
 {
@@ -110,5 +113,20 @@ class MasterKelasController extends Controller
         DB::table('master_kelas')->where('id_kelas', $id)->delete();
 
         return redirect()->back()->with('success', 'Menghapus Kelas !!');
+    }
+
+    public function exportTemplate(){
+          return Excel::download(new TemplateKelas, 'template_kelas.xlsx');
+    }
+
+     public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        Excel::import(new KelasImport, $request->file('file'));
+
+        return redirect()->route('master_kelas.index')->with('success', 'Data Kelas berhasil diimpor.');
     }
 }

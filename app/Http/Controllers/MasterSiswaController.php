@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\SiswaImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Exports\TemplateSiswaExport;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MasterSiswaController extends Controller
 {
@@ -118,5 +121,21 @@ class MasterSiswaController extends Controller
         DB::table('master_siswa')->where('id_siswa', $id)->delete();
 
         return redirect()->back()->with('success', 'Menghapus Siswa !!');
+    }
+
+    public function exportTemplate()
+    {
+        return Excel::download(new TemplateSiswaExport, 'template_siswa.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        Excel::import(new SiswaImport, $request->file('file'));
+
+        return redirect()->route('master_siswa.index')->with('success', 'Data Siswa berhasil diimpor.');
     }
 }

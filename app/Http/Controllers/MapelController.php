@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TemplateMapel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Imports\ImportMapel;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MapelController extends Controller
 {
@@ -91,5 +94,19 @@ class MapelController extends Controller
     {
         DB::table('master_pelajaran')->where('id_pelajaran',$id)->delete();
         return redirect()->back()->with('success','Berhasil Menghapus Mata Pelajaran');
+    }
+     public function exportTemplate(){
+          return Excel::download(new TemplateMapel, 'template_mapel.xlsx');
+    }
+
+     public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        Excel::import(new ImportMapel, $request->file('file'));
+
+        return redirect()->route('master_mapel.index')->with('success', 'Data Mata Pelajaran berhasil diimpor.');
     }
 }

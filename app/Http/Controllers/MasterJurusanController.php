@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Exports\TemplateJurusan;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Imports\ImportTahun;
+use App\Imports\JurusanImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MasterJurusanController extends Controller
 {
@@ -98,5 +102,20 @@ class MasterJurusanController extends Controller
     {
         DB::table('master_jurusan')->where('id_jurusan', $id)->delete();
         return redirect()->back()->with('success', 'Menghapus Jurusan');
+    }
+
+     public function exportTemplate(){
+          return Excel::download(new TemplateJurusan, 'template_jurusan.xlsx');
+    }
+
+     public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        Excel::import(new JurusanImport, $request->file('file'));
+
+        return redirect()->route('master_jurusan.index')->with('success', 'Data Jurusan berhasil diimpor.');
     }
 }

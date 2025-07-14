@@ -70,7 +70,9 @@ class PenilaianController extends Controller
             'id_siswa' => 'required',
             'id_pelajaran' => 'required',
             'id_kategori_penilaian' => 'required',
-            'nilai' => 'required'
+            'nilai' => 'required',
+            'kepribadian' => 'required',
+            'intelek' => 'required'
         ]);
 
         DB::table('master_penilaian')->insert($validate);
@@ -119,7 +121,9 @@ class PenilaianController extends Controller
             'id_siswa' => 'required',
             'id_pelajaran' => 'required',
             'id_kategori_penilaian' => 'required',
-            'nilai' => 'required'
+            'nilai' => 'required',
+             'kepribadian' => 'required',
+            'intelek' => 'required'
         ]);
 
         DB::table('master_penilaian')->where('id_penilaian',$id)->update($validate);

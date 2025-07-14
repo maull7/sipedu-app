@@ -27,6 +27,12 @@
                 <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#tambahJurusanModal">
                     Tambah Kelas
                 </button>
+
+                <a href="{{route('kelas.template')}}" class="btn btn-warning mb-3">Download Template</a>
+
+                <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#importKelas">
+                    Import Excel
+                </button>
                 <!-- Tombol Ekspor -->
 
 
@@ -105,6 +111,38 @@
                     </div>
                 </div>
         </section>
+    </div>
+
+     <div class="modal fade" id="importKelas" tabindex="-1" role="dialog" aria-labelledby="importKelasLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importKelasLabel">Import Data Kelas</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{route('kelas.import')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="file">Pilih File Excel</label>
+                            <input type="file" name="file"
+                                class="form-control @error('file') is-invalid @enderror">
+                            @error('file')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <!-- Modal Tambah Jurusan -->

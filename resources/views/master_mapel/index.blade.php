@@ -28,6 +28,12 @@
                     Tambah Mata Pelajaran
                 </button>
                 <!-- Tombol Ekspor -->
+                 <a href="{{route('mapel.template')}}" class="btn btn-warning mb-3">Download Template</a>
+
+                <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#importMapel">
+                    Import Excel
+                </button>
+               
 
 
                 <div class="card mb-4">
@@ -101,6 +107,38 @@
                     </div>
                 </div>
         </section>
+    </div>
+
+     <div class="modal fade" id="importMapel" tabindex="-1" role="dialog" aria-labelledby="importMapelLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importMapelLabel">Import Data Mata Pelajaran</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{route('mapel.import')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="file">Pilih File Excel</label>
+                            <input type="file" name="file"
+                                class="form-control @error('file') is-invalid @enderror">
+                            @error('file')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <!-- Modal Tambah Jurusan -->
