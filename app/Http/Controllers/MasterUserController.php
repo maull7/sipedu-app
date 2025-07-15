@@ -22,9 +22,7 @@ class MasterUserController extends Controller
      */
     public function index()
     {
-        $users = DB::table('users')->where('role', 0)
-            ->leftJoin('master_jabatan', 'master_jabatan.id', '=', 'users.id_jabatan')
-            ->select('users.*', 'master_jabatan.nama_jabatan')
+        $users = DB::table('users')
             ->get();
 
         return view('master_users.index', compact('users'));
@@ -53,19 +51,18 @@ class MasterUserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
             'nip' => 'required|string',
+            'role' => 'required'
         ]);
 
-        $jabatan =  DB::table('master_jabatan')->where('nama_jabatan', 'admin')->first();
         $user = new User();
         $user->name = $validated['name'];
         $user->email = $validated['email'];
         $user->password = Hash::make($validated['password']); // Hash password
         $user->nip = $validated['nip'];
-        $user->id_jabatan = $jabatan->id;
-        $user->role = 0;
+        $user->role = $validated['role'];
         $user->save();
 
-        return redirect()->back()->with('success', 'Menambahkan Admin!');
+        return redirect()->back()->with('success', 'Menambahkan User!');
     }
 
 
@@ -109,12 +106,13 @@ class MasterUserController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:6',
             'nip' => 'required|string',
+            'role' => 'required'
         ]);
 
         $user->name = $validated['name'];
         $user->email = $validated['email'];
         $user->nip = $validated['nip'];
-
+        $user->role = $validated['role'];
         // Hanya update password jika diisi
         if (!empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);
@@ -140,38 +138,5 @@ class MasterUserController extends Controller
         return redirect()->route('master_user.index')->with('success', 'Berhasil menghapus User.');
     }
 
-    public function updateStatus(Request $request) {}
-
-    public function updateStatusBulk(Request $request) {}
-
-
-    /**
-     * Reset user password to default (12345678)
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function resetPassword($id)
-    {
-        try {
-            DB::beginTransaction();
-
-            $user = User::findOrFail($id);
-
-            // Set default password
-            $defaultPassword = '12345678';
-            $user->password = Hash::make($defaultPassword);
-            $user->first_login = 1; // Require password change on next login
-            $user->save();
-
-            DB::commit();
-
-            return redirect()->route('master_user.index')
-                ->with('success', "Password untuk {$user->name} berhasil direset ke default (12345678)");
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->route('master_user.index')
-                ->with('error', 'Gagal mereset password: ' . $e->getMessage());
-        }
-    }
+  
 }

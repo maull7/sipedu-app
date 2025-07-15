@@ -337,8 +337,8 @@
         <section class="content">
             <div class="container-fluid">
                 <!-- Tombol Tambah User -->
-                <button type="button" class="btn btn-danger mb-3" data-toggle="modal" data-target="#tambahUser">
-                    Tambah Admin
+                <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#tambahUser">
+                    Tambah User
                 </button>
                 <!-- Tombol Ekspor -->
 
@@ -356,8 +356,6 @@
                                     <th width="15%">Email</th>
                                     <th width="10%">Role</th>
                                     <th width="10%">NIP/NIK</th>
-                                    <th witdh="10%">Jabatan</th>
-                                    <th width="10%">Password</th>
                                     <th width="10%">Aksi</th>
                                 </tr>
                             </thead>
@@ -371,14 +369,11 @@
                                         <td>
                                             @if ($user->role == 0)
                                                 Admin
+                                            @else 
+                                                Guru
                                             @endif
                                         </td>
                                         <td>{{ $user->nip }}</td>
-                                        <td>{{ $user->nama_jabatan ?? 'Belum ada jabatan' }}</td>
-
-
-
-                                        <td>********</td>
                                         <td>
                                             <a href="{{ route('master_user.edit', $user->id) }}"
                                                 class="btn btn-warning btn-sm">
@@ -427,56 +422,7 @@
                                         </div>
 
                                         <!-- Reset Password Modal -->
-                                        <div class="modal fade" id="resetPasswordModal{{ $user->id }}" tabindex="-1"
-                                            aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header bg-info text-white">
-                                                        <h5 class="modal-title" id="resetPasswordModalLabel">
-                                                            <i class="fas fa-key mr-2"></i> Reset Password
-                                                        </h5>
-                                                        <button type="button" class="close text-white" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body text-center">
-                                                        <div class="avatar-circle mb-3">
-                                                            <span class="initials">{{ substr($user->name, 0, 1) }}</span>
-                                                        </div>
-                                                        <h5 class="mb-0">{{ $user->name }}</h5>
-                                                        <p class="text-muted mb-3">{{ $user->email }}</p>
 
-                                                        <div class="alert alert-warning">
-                                                            <i class="fas fa-exclamation-triangle mr-2"></i>
-                                                            Password akan direset ke default: <strong>12345678</strong>
-                                                        </div>
-
-                                                        @if ($user->role == 0)
-                                                            <div class="alert alert-info">
-                                                                <i class="fas fa-info-circle mr-2"></i>
-                                                                Ini adalah akun siswa. Pastikan untuk memberitahu password
-                                                                baru kepada siswa yang bersangkutan.
-                                                            </div>
-                                                        @endif
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">
-                                                            <i class="fas fa-times mr-1"></i> Batal
-                                                        </button>
-                                                        <form action="{{ route('master_user.reset_password', $user->id) }}"
-                                                            method="POST" style="display:inline;">
-                                                            @csrf
-                                                            @method('POST')
-                                                            <button type="submit" class="btn btn-info">
-                                                                <i class="fas fa-key mr-1"></i> Reset Password
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -539,13 +485,21 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="form-group" id="role">
+                            <label for="role">Role User</label>
+                            <select name="role" id="role" class="form-control">
+                                <option value="0">Admin</option>
+                                <option value="1">Guru</option>
+                            </select>
+
+                        </div>
 
 
 
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-danger">Simpan</button>
+                            <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     </form>
                 </div>

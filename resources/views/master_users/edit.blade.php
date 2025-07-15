@@ -41,7 +41,18 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
+                                    <div class="form-group" id="role">
+                                        <label for="role">Role User</label>
+                                        <select name="role" id="role" class="form-control">
+                                            <option value="0" {{ $user->role == 0 ? 'selected' : '' }}>Admin</option>
+                                            <option value="1" {{ $user->role == 1 ? 'selected' : '' }}>Guru</option>
+                                        </select>
+                                    </div>
 
+
+                                </div>
+                                
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="password">Password (Biarkan kosong jika tidak ingin diubah)</label>
                                         <input type="password" name="password"
@@ -51,10 +62,7 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                </div>
-
-                                <div class="col-md-6">
-
+                                    
                                     <div class="form-group" id="nip-group">
                                         <label for="nip">NIP</label>
                                         <input type="text" name="nip" id="nip"
@@ -67,10 +75,11 @@
 
 
                                 </div>
+
                             </div>
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-danger">Simpan Perubahan</button>
+                                <button type="submit" class="btn btn-success">Simpan Perubahan</button>
                                 <a href="{{ route('master_user.index') }}" class="btn btn-secondary">Batal</a>
                             </div>
                         </form>

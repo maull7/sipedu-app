@@ -570,6 +570,11 @@
                             </a>
                             <ul id="masterMenu" class="collapse nav flex-column">
                                 <li class="nav-item">
+                                    <a href="/master_user" class="nav-link {{ request()->is('master_user*') ? 'active' : '' }}">
+                                        <p><i class="fas fa-calendar-alt"></i> Master User</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="/master_tahun" class="nav-link {{ request()->is('master_tahun*') ? 'active' : '' }}">
                                         <p><i class="fas fa-calendar-alt"></i> Master Tahun</p>
                                     </a>
@@ -608,7 +613,7 @@
                         </li>
 
 
-                        
+                    
                         @endif
                         <li class="nav-header">Nilai</li>
                            <li class="nav-item {{ request()->is('penilaian*') || request()->routeIs('penilaian*.') ? 'active' : '' }}">

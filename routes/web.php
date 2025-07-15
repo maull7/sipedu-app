@@ -44,13 +44,6 @@ Route::post('/actionLogin', [LoginController::class, 'actionLogin'])->name('acti
 Route::group(['middleware' => 'auth'], function () {
     //user atau pengguna
     Route::resource('master_user', MasterUserController::class);
-    Route::post('/master_user/{id}/reset-password', [MasterUserController::class, 'resetPassword'])
-        ->name('master_user.reset_password')
-        ->middleware('auth');
-    // Add this route
-    Route::post('/master-user/{id}/reset-password', [MasterUserController::class, 'resetPassword'])
-        ->name('master_user.reset_password');
-
     //tahun ajaran
     Route::resource('master_tahun', MasterTahunAjaranController::class);
     Route::get('template-tahunajaran',[MasterTahunAjaranController::class,'exportTemplate'])->name('tahun.template');

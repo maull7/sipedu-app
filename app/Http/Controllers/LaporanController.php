@@ -34,6 +34,7 @@ class LaporanController extends Controller
             'master_penilaian.nilai'
         );
 
+
     // ✅ Filter jika request diisi
     if ($request->filled('jurusan')) {
         $query->where('master_kelas.id_jurusan', $request->jurusan);
