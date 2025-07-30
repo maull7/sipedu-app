@@ -105,7 +105,7 @@
     </style>
 
     <div class="content-wrapper">
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        {{-- <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <!-- Indikator -->
             <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -138,7 +138,7 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only">Selanjutnya</span>
             </a>
-        </div>
+        </div> --}}
 
         <div class="content-header">
             <div class="container-fluid">
@@ -225,7 +225,7 @@
                                 </div>
                                 <div class="d-flex align-items-baseline">
                                     <h3 class="font-weight-bold mb-0">
-                                     12
+                                        12
                                     </h3>
                                     <span class="badge badge-soft-warning ml-2">
                                         <i class="fas fa-check-circle"></i>
@@ -252,7 +252,7 @@
                                 </div>
                                 <div class="d-flex align-items-baseline">
                                     <h3 class="font-weight-bold mb-0">
-                                     12
+                                        12
                                     </h3>
                                     <span class="badge badge-soft-success ml-2">
                                         <i class="fas fa-check-circle"></i>
@@ -279,7 +279,7 @@
                                 </div>
                                 <div class="d-flex align-items-baseline">
                                     <h3 class="font-weight-bold mb-0">
-                                     12
+                                        12
                                     </h3>
                                     <span class="badge badge-soft-warning ml-2">
                                         <i class="fas fa-check-circle"></i>
@@ -306,7 +306,7 @@
                                 </div>
                                 <div class="d-flex align-items-baseline">
                                     <h3 class="font-weight-bold mb-0">
-                                     12
+                                        12
                                     </h3>
                                     <span class="badge badge-soft-primary ml-2">
                                         <i class="fas fa-check-circle"></i>
@@ -321,8 +321,8 @@
                         </div>
                     </div>
 
-                  
-                   
+
+
 
 
                 </div>
