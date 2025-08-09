@@ -79,26 +79,26 @@
 
         <section class="content">
             <div class="container-fluid">
-                
-                     <!-- Tombol Tambah Siswa -->
+
+                <!-- Tombol Tambah Siswa -->
                 <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#tambahSiswaModal">
                     Tambah Siswa
                 </button>
 
-                <a href="{{route('siswa.template')}}" class="btn btn-warning mb-3">Download Template</a>
+                <a href="{{ route('siswa.template') }}" class="btn btn-warning mb-3">Download Template</a>
 
                 <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#importSiswaModal">
                     Import Excel
                 </button>
 
-               
+
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
                         Data Siswa
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive p-0">
+                        <div class="table-responsive">
                             <table id="tabel-data" class="table datatable table-hover text-nowrap">
                                 <thead>
                                     <tr>
@@ -180,7 +180,7 @@
         </section>
     </div>
 
-     <div class="modal fade" id="importSiswaModal" tabindex="-1" role="dialog" aria-labelledby="importSiswaModalLabel"
+    <div class="modal fade" id="importSiswaModal" tabindex="-1" role="dialog" aria-labelledby="importSiswaModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -190,13 +190,12 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{route('siswa.import')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('siswa.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="file">Pilih File Excel</label>
-                            <input type="file" name="file"
-                                class="form-control @error('file') is-invalid @enderror">
+                            <input type="file" name="file" class="form-control @error('file') is-invalid @enderror">
                             @error('file')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror

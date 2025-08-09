@@ -345,9 +345,9 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
-                        Data Admin
+                        Data Users
                     </div>
-                    <div class="card-body table-responsive p-0">
+                    <div class="card-body table-responsive">
                         <table id="tabel-data" class="table datatable table-hover text-nowrap">
                             <thead>
                                 <tr>
@@ -369,7 +369,7 @@
                                         <td>
                                             @if ($user->role == 0)
                                                 Admin
-                                            @else 
+                                            @else
                                                 Guru
                                             @endif
                                         </td>
@@ -434,8 +434,7 @@
     </div>
 
     <!-- Modal Tambah User -->
-    <div class="modal fade" id="tambahUser" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="tambahUser" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -460,9 +459,8 @@
 
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                id="email" name="email" placeholder="Masukkan email" value="{{ old('email') }}"
-                                required>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
+                                name="email" placeholder="Masukkan email" value="{{ old('email') }}" required>
                             @error('email')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
