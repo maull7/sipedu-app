@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PenilaianTemplateExport;
+use App\Imports\ImportPenilaian;
 
 class PenilaianController extends Controller
 {
@@ -142,4 +145,32 @@ class PenilaianController extends Controller
         DB::table('master_penilaian')->where('id_penilaian',$id)->delete();
         return redirect()->back()->with('success','Menghapus Nilai ');
     }
+
+    public function exportTemplate()
+    {
+        // Ambil kategori penilaian dari database
+        $kategoriPenilaian = DB::table('master_kategori_penilaian')
+            ->pluck('kategori_penilaian')
+            ->toArray();
+
+        return Excel::download(new PenilaianTemplateExport($kategoriPenilaian), 'template_penilaian.xlsx');
+    }
+    public function importNilai(Request $request)
+{
+    // validasi input file
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv'
+    ]);
+
+
+
+    try {
+        // jalankan proses import
+        Excel::import(new ImportPenilaian, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Data penilaian berhasil diimport.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Gagal import data: ' . $e->getMessage());
+    }
+}
 }

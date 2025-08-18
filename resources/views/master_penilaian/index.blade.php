@@ -80,9 +80,17 @@
         <section class="content">
             <div class="container-fluid">
                 <!-- Tombol Tambah Guru -->
-                <a href="{{route('penilaian.create')}}" class="btn btn-success mb-3">
+                <a href="{{ route('penilaian.create') }}" class="btn btn-success mb-3">
                     Tambah Nilai
                 </a>
+
+                <a href="{{ route('export.template.penilaian') }}" class="btn btn-info mb-3">
+                    Template Nilai
+                </a>
+
+                <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#importModalNilai">
+                    Import Excel
+                </button>
                 <!-- Tombol Ekspor -->
                 <form method="GET" action="{{ route('penilaian.index') }}">
                     <div class="row mb-3">
@@ -90,7 +98,8 @@
                             <select name="pelajaran" class="form-control" onchange="this.form.submit()">
                                 <option value="">Filter Pelajaran</option>
                                 @foreach ($mapel as $m)
-                                    <option value="{{ $m->id_pelajaran }}" {{ request('pelajaran') == $m->id_pelajaran ? 'selected' : '' }}>
+                                    <option value="{{ $m->id_pelajaran }}"
+                                        {{ request('pelajaran') == $m->id_pelajaran ? 'selected' : '' }}>
                                         {{ $m->nama_mapel }}
                                     </option>
                                 @endforeach
@@ -176,9 +185,39 @@
     </div>
 
     <!-- Modal Tambah Guru -->
-  
+
 
     <!-- Modal Impor Guru -->
+    <div class="modal fade" id="importModalNilai" tabindex="-1" role="dialog" aria-labelledby="importModalNilaiLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importModalNilaiLabel">Import Data Nilai Siswa</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('import.nilai') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="file">Pilih File Excel</label>
+                            <input type="file" name="file" class="form-control @error('file') is-invalid @enderror">
+                            @error('file')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script type="text/javascript">
         $('.datatable').DataTable({

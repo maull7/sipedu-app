@@ -23,6 +23,7 @@ use App\Http\Controllers\MasterPenggunaController;
 use App\Http\Controllers\MasterSiswaController;
 use App\Http\Controllers\MasterTahunAjaranController;
 use App\Http\Controllers\PenilaianController;
+use App\Imports\PenilaianImport;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +72,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('master_kategori', KatergoriPenilaianController::class);
 
+
     //mapel
     Route::resource('master_mapel',MapelController::class);
     Route::get('/template-mapel',[MapelController::class,'exportTemplate'])->name('mapel.template');
@@ -78,7 +80,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('master_jabatan', MasterJabatanController::class);
 
     Route::resource('penilaian',PenilaianController::class);
-
+    Route::get('/export/template-penilaian', [PenilaianController::class, 'exportTemplate'])->name('export.template.penilaian');
+    Route::post('/import/nilai',[PenilaianController::class,'importNilai'])->name('import.nilai');
     //laporan
     Route::get('laporan',[LaporanController::class,'index'])->name('laporan.index');
     Route::get('/laporan/export-excel', [LaporanController::class, 'exportExcel'])->name('laporan.export.excel');
@@ -113,7 +116,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //notif
     Route::get('/read', [NotifController::class, 'read'])->name('notif.read');
-    
+
 
 
     Route::get('/laporan-approval-export', function () {
@@ -136,5 +139,5 @@ Route::group(['middleware' => 'auth'], function () {
 // Route::group(['middleware' => ['auth', 'admin.only']], function () {
 
 
-    
+
 // });
