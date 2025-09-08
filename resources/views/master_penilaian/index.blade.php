@@ -123,6 +123,7 @@
                                     <th width="15%">Pelajaran</th>
                                     <th width="10%">Jenis Penilaian</th>
                                     <th width="10%">Nilai</th>
+                                    <th width="10%">Progress</th>
                                     <th width="10%">Aksi</th>
                                 </tr>
                             </thead>
@@ -135,6 +136,7 @@
                                         <td>{{ $i->kategori_penilaian }}</td>
 
                                         <td>{{ $i->nilai }}</td>
+                                        <td>{{ $i->progress }}</td>
 
                                         <td>
                                             <a href="{{ route('penilaian.edit', $i->id_penilaian) }}"

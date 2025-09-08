@@ -9,6 +9,7 @@
             @foreach ($kategori as $kat)
                 <th>{{ $kat }}</th>
             @endforeach
+            <th>Progress</th>
             <th>Total</th>
             <th>Rata-rata</th>
         </tr>
@@ -24,6 +25,7 @@
                 @foreach ($kategori as $kat)
                     <td>{{ $siswa[$kat] ?? '-' }}</td>
                 @endforeach
+                <td>{{ $siswa['progress'] }}</td>
                 <td>{{ $siswa['total'] }}</td>
                 <td>{{ $siswa['rata_rata'] }}</td>
             </tr>

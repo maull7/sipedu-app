@@ -25,22 +25,31 @@ class LoginController extends Controller
 
 
     public function actionLogin(Request $request)
-    {
+{
+    // 1) Validasi input
+    $credentials = $request->validate([
+        'nip'      => ['required'],
+        'password' => ['required'],
+    ]);
 
-        $datalogin = [
-            'nip' => $request->nip,
-            'password' => $request->password,
-        ];
-        // dd($request->all());
+    // 2) Attempt login
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate(); // penting untuk keamanan
 
-        if (Auth::attempt($datalogin)) {
-            return redirect('/home');
-        } else {
-            Session::flash('error', 'Nip / Password Salah !');
-            return redirect('/');
-            //return redirect('/');
+        // 3) Cek first_login SETELAH berhasil login
+        if ((int) Auth::user()->first_login === 0) {
+            return redirect()->route('change.view');
         }
+
+        // 4) Arahkan ke home kalau bukan login pertama
+        return redirect()->intended('/home');
     }
+
+    // Gagal login
+    return back()
+        ->withInput($request->only('nip'))
+        ->withErrors(['nip' => 'NIP atau password salah.']);
+}
 
 
     public function logout()
@@ -86,16 +95,12 @@ class LoginController extends Controller
         // Jika validasi sukses
         $user = Auth::user();
         $user->password = Hash::make($request->new_password);
-        $user->first_login = 0; // Set jadi 0 menandakan bukan login pertama
+        $user->first_login = 1; // Set jadi 1 menandakan bukan login pertama
         $user->save();
 
         session()->flash('success', 'Password berhasil diperbarui.');
 
         // Redirect sesuai role
-        if ($user->role == 0) {
-            return redirect('/siswaIn');
-        } else {
-            return redirect('/home');
-        }
+      return redirect('/home');
     }
 }

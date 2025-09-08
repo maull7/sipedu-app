@@ -42,6 +42,7 @@ class PenilaianTemplateExport implements FromCollection, WithHeadings, WithStyle
             'NIP',
             'MATA PELAJARAN',
             'KATEGORI NILAI',
+            'PROGRESS',
             'NILAI',
             'NILAI INTELEK',
             'NILAI PENGETAHUAN'
@@ -59,9 +60,10 @@ class PenilaianTemplateExport implements FromCollection, WithHeadings, WithStyle
             'C' => 15,  // NIP
             'D' => 25,  // MATA PELAJARAN
             'E' => 20,  // KATEGORI NILAI
-            'F' => 15,  // NILAI
-            'G' => 18,  // NILAI INTELEK
-            'H' => 20,  // NILAI PENGETAHUAN
+            'F' => 18,  // PROGRESS
+            'G' => 15,  // NILAI
+            'H' => 18,  // NILAI INTELEK
+            'I' => 20,  // NILAI PENGETAHUAN
         ];
     }
 
@@ -106,7 +108,7 @@ class PenilaianTemplateExport implements FromCollection, WithHeadings, WithStyle
      */
     private function setupWorksheet($sheet)
     {
-        $headerRange = 'A1:H1';
+        $headerRange = 'A1:I1'; // Updated range to include new column
 
         // Border untuk header
         $sheet->getStyle($headerRange)->applyFromArray([
@@ -138,14 +140,17 @@ class PenilaianTemplateExport implements FromCollection, WithHeadings, WithStyle
         // Validasi dropdown untuk kolom E (KATEGORI NILAI)
         $this->addKategoriDropdownValidation($sheet, 'E');
 
-        // Validasi untuk kolom F (NILAI)
-        $this->addNumericValidation($sheet, 'F', 'Nilai');
+        // Validasi dropdown untuk kolom F (PROGRESS)
+        $this->addProgressDropdownValidation($sheet, 'F');
 
-        // Validasi untuk kolom G (NILAI INTELEK)
-        $this->addNumericValidation($sheet, 'G', 'Nilai Intelek');
+        // Validasi untuk kolom G (NILAI)
+        $this->addNumericValidation($sheet, 'G', 'Nilai');
 
-        // Validasi untuk kolom H (NILAI PENGETAHUAN)
-        $this->addNumericValidation($sheet, 'H', 'Nilai Pengetahuan');
+        // Validasi untuk kolom H (NILAI INTELEK)
+        $this->addNumericValidation($sheet, 'H', 'Nilai Intelek');
+
+        // Validasi untuk kolom I (NILAI PENGETAHUAN)
+        $this->addNumericValidation($sheet, 'I', 'Nilai Pengetahuan');
     }
 
     /**
@@ -174,6 +179,34 @@ class PenilaianTemplateExport implements FromCollection, WithHeadings, WithStyle
         $validation->setError('Silakan pilih kategori nilai dari dropdown yang tersedia');
         $validation->setPromptTitle('Pilih Kategori Nilai');
         $validation->setPrompt('Pilih salah satu kategori nilai dari dropdown');
+        $validation->setFormula1($dropdownList);
+
+        // Apply validasi ke seluruh range kolom
+        $sheet->setDataValidation($range, $validation);
+    }
+
+    /**
+     * Tambahkan dropdown validation untuk progress
+     */
+    private function addProgressDropdownValidation($sheet, $column)
+    {
+        $range = $column . '2:' . $column . '1000';
+
+        // Progress options
+        $progressOptions = ['Test', 'Middle Test', 'Final Test'];
+        $dropdownList = '"' . implode(',', $progressOptions) . '"';
+
+        $validation = $sheet->getCell($column . '2')->getDataValidation();
+        $validation->setType(DataValidation::TYPE_LIST);
+        $validation->setErrorStyle(DataValidation::STYLE_INFORMATION);
+        $validation->setAllowBlank(false);
+        $validation->setShowInputMessage(true);
+        $validation->setShowErrorMessage(true);
+        $validation->setShowDropDown(true);
+        $validation->setErrorTitle('Input tidak valid');
+        $validation->setError('Silakan pilih progress dari dropdown yang tersedia');
+        $validation->setPromptTitle('Pilih Progress');
+        $validation->setPrompt('Pilih salah satu progress: Test, Middle Test, atau Final Test');
         $validation->setFormula1($dropdownList);
 
         // Apply validasi ke seluruh range kolom

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login - SEBASA</title>
+    <title>Login | SIPEDU - Sistem Penilaian Terpadu</title>
 
     <!-- Favicon -->
     <link rel="icon" href="{{ url('img/favicon.png') }}" type="image/png">
@@ -56,13 +56,16 @@
 
         /* Header styling */
         .card-header {
-            background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+            background: linear-gradient(135deg, #40c98d 0%, #198754 100%);
+
             color: white;
             border-bottom: none;
             padding: 25px 20px 70px;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 8px rgba(183, 28, 28, 0.3);
         }
+
 
         .card-header .h1 {
             color: white;
@@ -119,8 +122,8 @@
         }
 
         .form-control:focus {
-            border-color: #4e73df;
-            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+            border-color: #4ecf78;
+            box-shadow: 0 0 0 0.2rem rgba(90, 223, 78, 0.25);
         }
 
         .input-group-text {
@@ -128,12 +131,12 @@
             background-color: #f8f9fc;
             border: 1px solid #d1d3e2;
             border-left: none;
-            color: #4e73df;
+            color: ##4ecf78;
         }
 
         /* Button styling matching dashboard */
         .btn-primary {
-            background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+            background: linear-gradient(135deg, #35e578 0%, #1cb743 100%);
             border: none;
             border-radius: 10px;
             padding: 12px;
@@ -144,9 +147,9 @@
         }
 
         .btn-primary:hover {
-            background: linear-gradient(135deg, #224abe 0%, #4e73df 100%);
+            background: linear-gradient(135deg, #00e959 0%, #5cc542 100%);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(78, 115, 223, 0.25);
+            box-shadow: 0 5px 15px rgba(223, 78, 78, 0.25);
         }
 
         /* Alert styling */
@@ -168,14 +171,18 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 5px;
+            overflow: hidden;
+            /* supaya gambar nggak keluar dari lingkaran */
         }
 
         .logo-container img {
-            width: 80px;
-            height: auto;
-            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* isi penuh dan bulat, mirip cropping */
+            border-radius: 50%;
         }
+
 
         /* Avatar decoration like in dashboard */
         .avatar-decoration {
@@ -198,7 +205,7 @@
         }
 
         .password-toggle:hover {
-            color: #224abe;
+            color: #22be5e;
         }
 
         /* Modal styling */
@@ -314,36 +321,38 @@
                 height: 80px;
             }
 
-            .logo-container img {
-                width: 60px;
-            }
+
         }
     </style>
 </head>
 
 <body class="hold-transition login-page">
     <div class="login-box">
+        <!-- Login card -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
                 <div class="avatar-decoration">
-                    <i class="fas fa-key text-white"></i>
+                    <i class="fas fa-user-shield text-white"></i>
                 </div>
+                <!-- Updated logo container with white background -->
                 <div class="logo-container">
                     <img src="{{ url('img/image.png') }}" alt="Logo">
                 </div>
-                <a href="#" class="h1"><b>SEBASA</b></a><br>
-                <span class="brand-subtext">Sekolah Bahasa Polri</span>
+                <a href="#" class="h1"><b>SIPEDU</b></a><br>
+                <span class="brand-subtext">Sistem Penilaian Terpadu</span>
+
+                <!-- Wave effect -->
                 <div class="wave-container">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none"
                         class="wave">
                         <path
-                            d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,133.3C672,139,768,181,864,181.3C960,181,1056,139,1152,122.7C1248,107,1344,117,1392,122.7L1440,128L1440,320L0,320Z">
+                            d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,133.3C672,139,768,181,864,181.3C960,181,1056,139,1152,122.7C1248,107,1344,117,1392,122.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
                         </path>
                     </svg>
                 </div>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Silahkan Ubah Password Anda Untuk Melanjutkan Login</p>
+                <p class="login-box-msg">Sign in to start your session</p>
 
                 @if (session('error'))
                     <div class="alert alert-danger mb-4">
@@ -352,7 +361,21 @@
                     </div>
                 @endif
 
-                <form action="{{ route('change.password') }}" method="post">
+                @error('email')
+                    <div class="alert alert-danger mb-4">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        {{ $message }}
+                    </div>
+                @enderror
+
+                @if (session('inactive'))
+                    <div class="alert alert-danger mb-4">
+                        <i class="fas fa-ban mr-2"></i>
+                        {{ session('inactive') }}
+                    </div>
+                @endif
+
+                <form action="{{ route('change.password') }}" method="post" name="login-form">
                     @csrf
 
                     <div class="input-group mb-3">
@@ -380,53 +403,85 @@
                             <div class="text-danger mt-2">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="row mt-4">
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary btn-block">
-                                <i class="fas fa-save mr-2"></i> Simpan Password Baru
+                                <i class="fas fa-sign-in-alt mr-2"></i> Sign In
                             </button>
                         </div>
                     </div>
                 </form>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.login-box -->
+
+    <!-- Inactive Account Modal -->
+    <div class="modal fade" id="inactiveAccountModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title text-white">
+                        <i class="fas fa-exclamation-circle mr-2"></i>Akun Nonaktif
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-user-lock fa-3x text-danger mb-3"></i>
+                        <h5>Akses Ditolak</h5>
+                    </div>
+                    <p>{{ session('inactive') ?: 'Akun Anda sedang dinonaktifkan. Silakan hubungi administrator untuk informasi lebih lanjut.' }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
             </div>
         </div>
     </div>
 
+    @if (session('inactive'))
+        <script>
+            $(document).ready(function() {
+                $('#inactiveAccountModal').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                $('#inactiveAccountModal').modal('show');
+            });
+        </script>
+    @endif
 
-    <!-- Toggle Password Script -->
+    <!-- jQuery -->
+    <script src="{{ url('plugins/jquery/jquery.min.js') }}"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{{ url('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{ url('dist/js/adminlte.js') }}"></script>
+
+    <!-- Password Toggle Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const toggles = [{
-                    btn: 'toggleNewPassword',
-                    input: 'newPassword'
-                },
-                {
-                    btn: 'toggleConfirmPassword',
-                    input: 'confirmPassword'
-                }
-            ];
+            const togglePassword = document.getElementById('togglePassword');
+            const password = document.getElementById('password');
 
-            toggles.forEach(pair => {
-                const toggleBtn = document.getElementById(pair.btn);
-                const inputField = document.getElementById(pair.input);
+            togglePassword.addEventListener('click', function() {
+                // Toggle password visibility
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
 
-                toggleBtn.addEventListener('click', function() {
-                    const type = inputField.getAttribute('type') === 'password' ? 'text' :
-                        'password';
-                    inputField.setAttribute('type', type);
-                    this.querySelector('span').classList.toggle('fa-eye');
-                    this.querySelector('span').classList.toggle('fa-eye-slash');
-                });
+                // Toggle eye icon
+                this.querySelector('span').classList.toggle('fa-eye');
+                this.querySelector('span').classList.toggle('fa-eye-slash');
             });
         });
     </script>
-
-    <!-- Scripts -->
-    <script src="{{ url('plugins/jquery/jquery.min.js') }}"></script>
-    <script src="{{ url('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ url('dist/js/adminlte.js') }}"></script>
 </body>
-
 
 </html>

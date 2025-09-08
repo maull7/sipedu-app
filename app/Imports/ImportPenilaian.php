@@ -61,6 +61,7 @@ class ImportPenilaian implements ToCollection, WithHeadingRow
                     'nilai'                 => $row['nilai'] ?? null,
                     'kepribadian'           => $row['nilai_intelek'] ?? null,   // mapping ke kolom kepribadian
                     'intelek'               => $row['nilai_pengetahuan'] ?? null, // mapping ke kolom intelek
+                    'progress'              => $row['progress'] ?? null,
                 ]);
             } catch (\Exception $e) {
                 Log::error("Gagal import penilaian: " . $e->getMessage());

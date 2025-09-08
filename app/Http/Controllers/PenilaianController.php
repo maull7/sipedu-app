@@ -56,7 +56,9 @@ class PenilaianController extends Controller
         $mapel = DB::table('master_pelajaran')->get();
         $kategori = DB::table('master_kategori_penilaian')->get();
 
-        return view('master_penilaian.create',compact('siswa','mapel','kategori'));
+        $progress = ['Test','Middle Test', 'Final Test'];
+
+        return view('master_penilaian.create',compact('siswa','mapel','kategori','progress'));
 
 
     }
@@ -75,7 +77,8 @@ class PenilaianController extends Controller
             'id_kategori_penilaian' => 'required',
             'nilai' => 'required',
             'kepribadian' => 'required',
-            'intelek' => 'required'
+            'intelek' => 'required',
+            'progress' => 'required'
         ]);
 
         DB::table('master_penilaian')->insert($validate);
@@ -107,8 +110,9 @@ class PenilaianController extends Controller
         $siswa = DB::table('master_siswa')->get();
         $mapel = DB::table('master_pelajaran')->get();
         $kategori = DB::table('master_kategori_penilaian')->get();
+          $progress = ['Test','Middle Test', 'Final Test'];
 
-        return view('master_penilaian.edit',compact('penilaian','siswa','mapel','kategori'));
+        return view('master_penilaian.edit',compact('penilaian','siswa','mapel','kategori','progress'));
     }
 
     /**
@@ -126,7 +130,8 @@ class PenilaianController extends Controller
             'id_kategori_penilaian' => 'required',
             'nilai' => 'required',
              'kepribadian' => 'required',
-            'intelek' => 'required'
+            'intelek' => 'required',
+            'progress' => 'required'
         ]);
 
         DB::table('master_penilaian')->where('id_penilaian',$id)->update($validate);

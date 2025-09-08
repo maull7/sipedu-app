@@ -32,91 +32,120 @@
                     <div class="card-body">
                         <!-- Form Filter -->
                         <form action="{{ route('laporan.index') }}" method="GET" class="mb-3">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label for="jurusan">Jurusan</label>
-                                        <select name="jurusan" id="jurusan" class="form-control">
-                                            <option value="">-- Semua Jurusan --</option>
-                                            @foreach ($jurusanList as $j)
-                                                <option value="{{ $j->id_jurusan }}" {{ request('jurusan') == $j->id_jurusan ? 'selected' : '' }}>
-                                                    {{ $j->nama_jurusan }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for="kelas">Kelas</label>
-                                        <select name="kelas" id="kelas" class="form-control">
-                                            <option value="">-- Semua Kelas --</option>
-                                            @foreach ($kelasList as $k)
-                                                <option value="{{ $k->id_kelas }}" {{ request('kelas') == $k->id_kelas ? 'selected' : '' }}>
-                                                    {{ $k->nama_kelas }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for="mapel">Mata Pelajaran</label>
-                                        <select name="mapel" id="mapel" class="form-control">
-                                            <option value="">-- Semua Mapel --</option>
-                                            @foreach ($mapelList as $m)
-                                                <option value="{{ $m->id_pelajaran }}" {{ request('mapel') == $m->id_pelajaran ? 'selected' : '' }}>
-                                                    {{ $m->nama_mapel }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3 d-flex align-items-end">
-                                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-filter"></i> Filter</button>
-                                    </div>
+                            <div class="row">
+                                {{-- Filter Jurusan --}}
+                                <div class="col-md-3">
+                                    <label for="jurusan">Jurusan</label>
+                                    <select name="jurusan" id="jurusan" class="form-control">
+                                        <option value="">-- Semua Jurusan --</option>
+                                        @foreach ($jurusanList as $j)
+                                            <option value="{{ $j->id_jurusan }}"
+                                                {{ request('jurusan') == $j->id_jurusan ? 'selected' : '' }}>
+                                                {{ $j->nama_jurusan }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                            </form>
 
-                    
-                      
-                            <div class="table-responsive">
-                                <table class="table table-hover datatable text-nowrap">
-                                    <thead>
-                                            <tr>
-                                                <th>Nama</th>
-                                                <th>NIP</th>
-                                                <th>Jenis Kelamin</th>
-                                                <th>Kelas</th>
-                                                <th>Mata Pelajaran</th>
-                                                @foreach ($kategori as $kategoriNama)
-                                                    <th>{{ $kategoriNama }}</th>
-                                                @endforeach
-                                                <th>Total</th>
-                                                <th>Rata-rata</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($laporan as $siswa)
-                                                <tr>
-                                                    <td>{{ $siswa['nama_siswa'] }}</td>
-                                                    <td>{{ $siswa['nip'] }}</td>
-                                                    <td>{{ $siswa['jk'] }}</td>
-                                                    <td>{{ $siswa['kelas'] }}</td>
-                                                    <td>{{ $siswa['mapel'] }}</td>
-                                                    @foreach ($kategori as $kategoriNama)
-                                                        <td>
-                                                            @if(isset($siswa[$kategoriNama]))
-                                                                {{ number_format($siswa[$kategoriNama], 2, ',', '.') }}
-                                                            @else
-                                                                -
-                                                            @endif
-                                                        </td>
-                                                    @endforeach
-                                                    <td>{{ number_format($siswa['total'], 2, ',', '.') }}</td>
-                                                    <td>{{ number_format($siswa['rata_rata'], 2, ',', '.') }}</td>
-                                                </tr>
-                                            @endforeach
+                                {{-- Filter Kelas --}}
+                                <div class="col-md-3">
+                                    <label for="kelas">Kelas</label>
+                                    <select name="kelas" id="kelas" class="form-control">
+                                        <option value="">-- Semua Kelas --</option>
+                                        @foreach ($kelasList as $k)
+                                            <option value="{{ $k->id_kelas }}"
+                                                {{ request('kelas') == $k->id_kelas ? 'selected' : '' }}>
+                                                {{ $k->nama_kelas }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
-                                        </tbody>
+                                {{-- Filter Mapel --}}
+                                <div class="col-md-3">
+                                    <label for="mapel">Mata Pelajaran</label>
+                                    <select name="mapel" id="mapel" class="form-control">
+                                        <option value="">-- Semua Mapel --</option>
+                                        @foreach ($mapelList as $m)
+                                            <option value="{{ $m->id_pelajaran }}"
+                                                {{ request('mapel') == $m->id_pelajaran ? 'selected' : '' }}>
+                                                {{ $m->nama_mapel }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
-                                </table>
+                                {{-- Filter Progress --}}
+                                <div class="col-md-2">
+                                    <label for="progress">Progress</label>
+                                    <select name="progress" id="progress" class="form-control">
+                                        <option value="">-- Semua Progress --</option>
+                                        @foreach ($progress as $p)
+                                            <option value="{{ $p }}"
+                                                {{ request('progress') == $p ? 'selected' : '' }}>
+                                                {{ $p }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                {{-- Tombol Filter --}}
+                                <div class="col-md-1 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-filter"></i> Filter
+                                    </button>
+                                </div>
                             </div>
-                      
+                        </form>
+
+
+
+
+                        <div class="table-responsive">
+                            <table class="table table-hover datatable text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>NIP</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>Kelas</th>
+                                        <th>Mata Pelajaran</th>
+                                        @foreach ($kategori as $kategoriNama)
+                                            <th>{{ $kategoriNama }}</th>
+                                        @endforeach
+                                        <th>Progress</th>
+                                        <th>Total</th>
+                                        <th>Rata-rata</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($laporan as $siswa)
+                                        <tr>
+                                            <td>{{ $siswa['nama_siswa'] }}</td>
+                                            <td>{{ $siswa['nip'] }}</td>
+                                            <td>{{ $siswa['jk'] }}</td>
+                                            <td>{{ $siswa['kelas'] }}</td>
+                                            <td>{{ $siswa['mapel'] }}</td>
+                                            @foreach ($kategori as $kategoriNama)
+                                                <td>
+                                                    @if (isset($siswa[$kategoriNama]))
+                                                        {{ number_format($siswa[$kategoriNama], 2, ',', '.') }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                            @endforeach
+                                            <td>{{ $siswa['progress'] }}</td>
+                                            <td>{{ number_format($siswa['total'], 2, ',', '.') }}</td>
+                                            <td>{{ number_format($siswa['rata_rata'], 2, ',', '.') }}</td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+
+                            </table>
+                        </div>
+
                     </div>
 
                 </div>
@@ -134,6 +163,4 @@
             });
         });
     </script>
-
-
 @endsection

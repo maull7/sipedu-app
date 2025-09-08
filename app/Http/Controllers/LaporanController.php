@@ -31,7 +31,8 @@ class LaporanController extends Controller
             'master_pelajaran.nama_mapel',
             'master_penilaian.id_pelajaran',
             'master_kategori_penilaian.kategori_penilaian',
-            'master_penilaian.nilai'
+            'master_penilaian.nilai',
+            'master_penilaian.progress'
         );
 
 
@@ -44,6 +45,9 @@ class LaporanController extends Controller
     }
     if ($request->filled('mapel')) {
         $query->where('master_penilaian.id_pelajaran', $request->mapel);
+    }
+     if ($request->filled('progress')) {
+        $query->where('master_penilaian.progress', $request->progress);
     }
 
     $nilaiData = $query->get();
@@ -60,6 +64,7 @@ class LaporanController extends Controller
             'jk' => $row->jenis_kelamin,
             'kelas' => $row->nama_kelas,
             'mapel' => $row->nama_mapel,
+            'progress' => $row->progress,
             'total' => 0,
             'count' => 0,
             'rata_rata' => 0,
@@ -86,7 +91,9 @@ class LaporanController extends Controller
     $kelasList = DB::table('master_kelas')->get();
     $mapelList = DB::table('master_pelajaran')->get();
 
-    return view('laporan.index', compact('laporan', 'kategori', 'jurusanList', 'kelasList', 'mapelList'));
+
+    $progress = ['Test','Middle Test','Final Test'];
+    return view('laporan.index', compact('laporan', 'kategori', 'jurusanList', 'kelasList', 'mapelList','progress'));
 }
 
     public function exportExcel(Request $request)
@@ -109,7 +116,8 @@ class LaporanController extends Controller
             'master_pelajaran.nama_mapel',
             'master_penilaian.id_pelajaran',
             'master_kategori_penilaian.kategori_penilaian',
-            'master_penilaian.nilai'
+            'master_penilaian.nilai',
+            'master_penilaian.progress'
         );
 
     if ($request->filled('jurusan')) {
@@ -121,6 +129,9 @@ class LaporanController extends Controller
     if ($request->filled('mapel')) {
         $query->where('master_penilaian.id_pelajaran', $request->mapel);
     }
+        if ($request->filled('progress')) {
+            $query->where('master_penilaian.progress', $request->progress);
+        }
 
     $nilaiData = $query->get();
 
@@ -136,6 +147,7 @@ class LaporanController extends Controller
             'jk' => $row->jenis_kelamin,
             'kelas' => $row->nama_kelas,
             'mapel' => $row->nama_mapel,
+            'progress' => $row->progress,
             'total' => 0,
             'count' => 0,
             'rata_rata' => 0,
@@ -182,7 +194,8 @@ class LaporanController extends Controller
             'master_pelajaran.nama_mapel',
             'master_penilaian.kepribadian',
             'master_penilaian.intelek',
-            'master_tahun.tahun_ajaran'
+            'master_tahun.tahun_ajaran',
+            'master_penilaian.progress'
         );
 
     // Filter opsional
@@ -194,6 +207,9 @@ class LaporanController extends Controller
     }
     if ($request->filled('mapel')) {
         $query->where('master_penilaian.id_pelajaran', $request->mapel);
+    }
+    if ($request->filled('progress')) {
+        $query->where('master_penilaian.progress', $request->progress);
     }
 
     $nilaiData = $query->get();
@@ -212,6 +228,7 @@ class LaporanController extends Controller
             'kepribadian'  => $row->kepribadian,
             'intelek'      => $row->intelek,
             'rata_rata'    => $rata,
+            'progress'     => $row->progress,
             'jurusan' => $row->nama_jurusan,
             'kelas' => $row->nama_kelas,
             'tahun' => $row->tahun_ajaran
