@@ -39,10 +39,10 @@ class PenilaianTemplateExport implements FromCollection, WithHeadings, WithStyle
         return [
             'NO',
             'NAMA',
-            'NIP',
+            'NIP NRP',
             'MATA PELAJARAN',
             'KATEGORI NILAI',
-            'PROGRESS',
+            'WAKTU PENILAIAN',
             'NILAI',
             'NILAI INTELEK',
             'NILAI PENGETAHUAN'
@@ -193,7 +193,7 @@ class PenilaianTemplateExport implements FromCollection, WithHeadings, WithStyle
         $range = $column . '2:' . $column . '1000';
 
         // Progress options
-        $progressOptions = ['Test', 'Middle Test', 'Final Test'];
+        $progressOptions = ['Progress Test', 'Middle Test', 'Final Test'];
         $dropdownList = '"' . implode(',', $progressOptions) . '"';
 
         $validation = $sheet->getCell($column . '2')->getDataValidation();

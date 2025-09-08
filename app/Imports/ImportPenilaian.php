@@ -24,8 +24,9 @@ class ImportPenilaian implements ToCollection, WithHeadingRow
                 }
 
                 // === Ambil id_siswa dari master_siswa (nip) ===
+
                 $siswa = DB::table('master_siswa')
-                    ->where('nip', $row['nip'])
+                    ->where('nip', $row['nip_nrp'])
                     ->first();
 
                 if (!$siswa) {
@@ -61,7 +62,7 @@ class ImportPenilaian implements ToCollection, WithHeadingRow
                     'nilai'                 => $row['nilai'] ?? null,
                     'kepribadian'           => $row['nilai_intelek'] ?? null,   // mapping ke kolom kepribadian
                     'intelek'               => $row['nilai_pengetahuan'] ?? null, // mapping ke kolom intelek
-                    'progress'              => $row['progress'] ?? null,
+                    'progress'              => $row['waktu_penilaian'] ?? null,
                 ]);
             } catch (\Exception $e) {
                 Log::error("Gagal import penilaian: " . $e->getMessage());

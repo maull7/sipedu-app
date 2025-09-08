@@ -121,7 +121,7 @@
                     Nama Dik : {{ $siswa['jurusan'] }}<br>
                     PNS POLRI {{ $siswa['kelas'] }}<br>
                     POLRI {{ $siswa['kelas'] }} - {{ $siswa['tahun'] }} <br>
-                    PROGRESS {{ $siswa['progress'] }}
+                    WAKTU PENILAIAN : {{ $siswa['progress'] }}
                 </div>
             </div>
 

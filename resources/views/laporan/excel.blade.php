@@ -9,7 +9,7 @@
             @foreach ($kategori as $kat)
                 <th>{{ $kat }}</th>
             @endforeach
-            <th>Progress</th>
+            <th>Waktu Penilaian</th>
             <th>Total</th>
             <th>Rata-rata</th>
         </tr>

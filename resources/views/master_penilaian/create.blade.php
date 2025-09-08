@@ -98,9 +98,9 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="progress">Progress Nilai</label>
+                                        <label for="progress">Waktu Penilaian</label>
                                         <select name="progress" id="Jenis" class="form-control">
-                                            <option>Pilih Progress Nilai</option>
+                                            <option>Pilih waktu Penilaian</option>
                                             @foreach ($progress as $item)
                                                 <option value="{{ $item }}">{{ $item }}
                                                 </option>

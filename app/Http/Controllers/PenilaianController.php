@@ -56,7 +56,7 @@ class PenilaianController extends Controller
         $mapel = DB::table('master_pelajaran')->get();
         $kategori = DB::table('master_kategori_penilaian')->get();
 
-        $progress = ['Test','Middle Test', 'Final Test'];
+        $progress = ['Progress Test','Middle Test', 'Final Test'];
 
         return view('master_penilaian.create',compact('siswa','mapel','kategori','progress'));
 
@@ -110,7 +110,7 @@ class PenilaianController extends Controller
         $siswa = DB::table('master_siswa')->get();
         $mapel = DB::table('master_pelajaran')->get();
         $kategori = DB::table('master_kategori_penilaian')->get();
-          $progress = ['Test','Middle Test', 'Final Test'];
+          $progress = ['Progress Test','Middle Test', 'Final Test'];
 
         return view('master_penilaian.edit',compact('penilaian','siswa','mapel','kategori','progress'));
     }

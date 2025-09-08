@@ -77,9 +77,9 @@
 
                                 {{-- Filter Progress --}}
                                 <div class="col-md-2">
-                                    <label for="progress">Progress</label>
+                                    <label for="progress">Waktu Penilaian</label>
                                     <select name="progress" id="progress" class="form-control">
-                                        <option value="">-- Semua Progress --</option>
+                                        <option value="">-- Waktu Penilaian --</option>
                                         @foreach ($progress as $p)
                                             <option value="{{ $p }}"
                                                 {{ request('progress') == $p ? 'selected' : '' }}>
@@ -113,7 +113,7 @@
                                         @foreach ($kategori as $kategoriNama)
                                             <th>{{ $kategoriNama }}</th>
                                         @endforeach
-                                        <th>Progress</th>
+                                        <th>Waktu Penilaian</th>
                                         <th>Total</th>
                                         <th>Rata-rata</th>
                                     </tr>
