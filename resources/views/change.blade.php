@@ -352,7 +352,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
+                <p class="login-box-msg">Konfirmasi Ubah Password</p>
 
                 @if (session('error'))
                     <div class="alert alert-danger mb-4">

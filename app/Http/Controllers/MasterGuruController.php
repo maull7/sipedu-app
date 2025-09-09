@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\TemplateGuru;
+use App\Exports\ExportGuru;
+use App\Imports\GuruImport;
 use Illuminate\Http\Request;
+use App\Exports\TemplateGuru;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Imports\GuruImport;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -173,5 +174,11 @@ class MasterGuruController extends Controller
         Excel::import(new GuruImport, $request->file('file'));
 
         return redirect()->route('master_guru.index')->with('success', 'Data Guru berhasil diimpor.');
+    }
+
+    public function export()
+    {
+        $gurus = DB::table('master_guru')->get();
+        return Excel::download(new ExportGuru($gurus), 'data_guru.xlsx');
     }
 }

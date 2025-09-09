@@ -69,7 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('master_guru', MasterGuruController::class);
     Route::get('/template-guru',[MasterGuruController::class,'exportTemplate'])->name('guru.template');
     Route::post('/import-guru',[MasterGuruController::class,'import'])->name('guru.import');
-
+    Route::get('/export-guru',[MasterGuruController::class,'export'])->name('guru.export');
     Route::resource('master_kategori', KatergoriPenilaianController::class);
 
 

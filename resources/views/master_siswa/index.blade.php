@@ -105,8 +105,8 @@
                                         <th width="15%">Nama</th>
                                         <th width="15%">Alamat</th>
                                         <th width="5%">Jenis Kelamin</th>
-                                        <th width="10%">NIP</th>
-                                        <th width="10%">NIK</th>
+                                        <th width="10%">NIP/NRP</th>
+                                        <th width="10%">NOSIS</th>
                                         <th width="5%">Email</th>
                                         <th width="10%">Kelas</th>
 
@@ -259,7 +259,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="nip">NIP</label>
+                                    <label for="nip">NIP/NRP</label>
                                     <input type="text" name="nip"
                                         class="form-control @error('nip') is-invalid @enderror"
                                         value="{{ old('nip') }}">
@@ -268,7 +268,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="nik">NIK</label>
+                                    <label for="nik">NOSIS</label>
                                     <input type="text" name="nik"
                                         class="form-control @error('nik') is-invalid @enderror"
                                         value="{{ old('nik') }}">

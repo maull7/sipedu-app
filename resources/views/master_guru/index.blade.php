@@ -84,11 +84,14 @@
                     Tambah Guru
                 </button>
 
-                 <a href="{{route('guru.template')}}" class="btn btn-warning mb-3">Download Template</a>
+                <a href="{{ route('guru.template') }}" class="btn btn-warning mb-3">Download Template</a>
 
                 <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#importGuru">
                     Import Excel
                 </button>
+
+
+                <a href="{{ route('guru.export') }}" class="btn btn-info mb-3">Export Data</a>
                 <!-- Tombol Ekspor -->
 
                 <div class="card mb-4">
@@ -168,7 +171,7 @@
         </section>
     </div>
 
-     <div class="modal fade" id="importGuru" tabindex="-1" role="dialog" aria-labelledby="importGuruLabel"
+    <div class="modal fade" id="importGuru" tabindex="-1" role="dialog" aria-labelledby="importGuruLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -178,13 +181,12 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{route('guru.import')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('guru.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="file">Pilih File Excel</label>
-                            <input type="file" name="file"
-                                class="form-control @error('file') is-invalid @enderror">
+                            <input type="file" name="file" class="form-control @error('file') is-invalid @enderror">
                             @error('file')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror

@@ -17,8 +17,8 @@ class SiswaImport implements ToModel, WithHeadingRow
             empty($row['nama_siswa']) ||
             empty($row['alamat']) ||
             empty($row['jenis_kelamin']) ||
-            empty($row['nip']) ||
-            empty($row['nik']) ||
+            empty($row['nip_nrp']) ||
+            empty($row['nosis']) ||
             empty($row['email']) ||
             empty($row['kelas'])
         ) {
@@ -41,8 +41,8 @@ class SiswaImport implements ToModel, WithHeadingRow
             'nama_siswa'    => $row['nama_siswa'],
             'alamat_siswa'  => $row['alamat'],
             'jenis_kelamin' => $row['jenis_kelamin'],
-            'nip'           => $row['nip'],
-            'nik'           => $row['nik'],
+            'nip'           => $row['nip_nrp'],
+            'nik'           => $row['nosis'],
             'email'         => $row['email'],
             'id_kelas'      => $kelas->id_kelas,
             'sts'           => '1',

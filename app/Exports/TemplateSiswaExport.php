@@ -20,8 +20,8 @@ class TemplateSiswaExport implements FromArray, WithHeadings, WithMapping, WithC
                 'nama_siswa' => 'Contoh Siswa',
                 'alamat_siswa' => 'Jl. Contoh No. 123',
                 'jenis_kelamin' => 'Laki-laki',
-                'nip' => '1234567890',
-                'nik' => '321234567890',
+                'nip_nrp' => '1234567890',
+                'nosis' => '321234567890',
                 'email' => 'contoh@email.com',
                 'kelas' => 'NAMA KELAS',
             ]
@@ -34,8 +34,8 @@ class TemplateSiswaExport implements FromArray, WithHeadings, WithMapping, WithC
             'Nama Siswa',
             'Alamat',
             'Jenis Kelamin',
-            'NIP',
-            'NIK',
+            'NIP NRP',
+            'nosis',
             'Email',
             'Kelas',
         ];
@@ -47,8 +47,8 @@ class TemplateSiswaExport implements FromArray, WithHeadings, WithMapping, WithC
             $siswa['nama_siswa'],
             $siswa['alamat_siswa'],
             $siswa['jenis_kelamin'],
-            $siswa['nip'],
-            $siswa['nik'],
+            $siswa['nip_nrp'],
+            $siswa['nosis'],
             $siswa['email'] ?? 'Belum ada email',
             $siswa['kelas'],
         ];

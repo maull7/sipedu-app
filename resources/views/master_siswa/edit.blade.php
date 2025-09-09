@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="nip">NIP</label>
+                                        <label for="nip">NIP/NRP</label>
                                         <input type="text" name="nip"
                                             class="form-control @error('nip') is-invalid @enderror"
                                             value="{{ old('nip', $siswa->nip) }}">
@@ -67,7 +67,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label for="nik">NIK</label>
+                                        <label for="nik">NOSIS</label>
                                         <input type="text" name="nik"
                                             class="form-control @error('nik') is-invalid @enderror"
                                             value="{{ old('nik', $siswa->nik) }}">
