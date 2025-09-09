@@ -92,7 +92,7 @@ class LaporanController extends Controller
     $mapelList = DB::table('master_pelajaran')->get();
 
 
-    $progress = ['Test','Middle Test','Final Test'];
+    $progress = ['Progress Test','Middle Test','Final Test'];
     return view('laporan.index', compact('laporan', 'kategori', 'jurusanList', 'kelasList', 'mapelList','progress'));
 }
 
