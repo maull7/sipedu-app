@@ -21,6 +21,7 @@
                                 <div class="list-group list-group-horizontal" id="menu-penilaian">
                                     <a href="#" class="list-group-item list-group-item-action active" data-target="utama">Penilaian Utama</a>
                                     <a href="#" class="list-group-item list-group-item-action" data-target="formatif">Penilaian Formatif & Kehadiran</a>
+                                    <a href="#" class="list-group-item list-group-item-action" data-target="mental">Nilai Mental</a>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -172,6 +173,25 @@
                                         </div>
                                     </form>
                                 </div>
+
+                                <div id="form-mental" class="d-none">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID Siswa</th>
+                                                <th>Nilai Mental</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($nilai_mental as $item)
+                                                <tr>
+                                                    <td>{{ $item->id_siswa }}</td>
+                                                    <td>{{ $item->nilai_mental }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -201,12 +221,19 @@
             var target = link.getAttribute('data-target');
             var utama = document.getElementById('form-utama');
             var formatif = document.getElementById('form-formatif');
+            var mental = document.getElementById('form-mental');
             if (target === 'utama') {
                 utama.classList.remove('d-none');
                 formatif.classList.add('d-none');
-            } else {
+                mental.classList.add('d-none');
+            } else if (target === 'formatif') {
                 formatif.classList.remove('d-none');
                 utama.classList.add('d-none');
+                mental.classList.add('d-none');
+            } else if (target === 'mental') {
+                mental.classList.remove('d-none');
+                utama.classList.add('d-none');
+                formatif.classList.add('d-none');
             }
         });
     });

@@ -57,10 +57,9 @@ class PenilaianController extends Controller
         $kategori = DB::table('master_kategori_penilaian')->get();
 
         $progress = ['Progress Test','Middle Test', 'Final Test'];
+        $nilai_mental = DB::table('nilai_mental')->get();
 
-        return view('master_penilaian.create',compact('siswa','mapel','kategori','progress'));
-
-
+        return view('master_penilaian.create',compact('siswa','mapel','kategori','progress','nilai_mental'));
     }
 
     /**
