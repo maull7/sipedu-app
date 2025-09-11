@@ -3,13 +3,19 @@
 @section('style')
 <style>
     .penilaian-nav .btn {
-        transition: all 0.3s ease-in-out;
-        border-radius: 30px;
+        border-radius: 50px;
+        border: 1px solid var(--bs-primary);
+        background-color: transparent;
+        color: var(--bs-primary);
+        padding: 0.5rem 1.25rem;
+        transition: all 0.2s ease-in-out;
     }
 
-    .penilaian-nav .btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    .penilaian-nav .btn:hover,
+    .penilaian-nav .btn.active {
+        background-color: var(--bs-primary);
+        color: #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
 
     .fade-in {
@@ -60,8 +66,8 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="penilaian-nav text-center mb-4">
-                            <div class="btn-group btn-group-lg shadow-sm" role="group" id="menu-penilaian">
-                                <a href="#" class="btn btn-primary active" data-target="utama">
+                            <div class="d-inline-flex gap-2" id="menu-penilaian">
+                                <a href="#" class="btn btn-outline-primary active" data-target="utama">
                                     <i class="fas fa-star me-1"></i> Penilaian Utama
                                 </a>
                                 <a href="#" class="btn btn-outline-primary" data-target="formatif">
@@ -281,10 +287,8 @@
         e.preventDefault();
 
         // toggle active
-        menu.querySelectorAll('a').forEach(a => a.classList.remove('active', 'btn-primary'));
-        menu.querySelectorAll('a').forEach(a => a.classList.add('btn-outline-primary'));
-        link.classList.remove('btn-outline-primary');
-        link.classList.add('active', 'btn-primary');
+        menu.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+        link.classList.add('active');
 
         // animasi transisi form
         const target = link.getAttribute('data-target');
