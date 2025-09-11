@@ -17,13 +17,13 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-3 mb-3">
-                                <div class="list-group" id="menu-penilaian">
+                            <div class="col-12 mb-3">
+                                <div class="list-group list-group-horizontal" id="menu-penilaian">
                                     <a href="#" class="list-group-item list-group-item-action active" data-target="utama">Penilaian Utama</a>
                                     <a href="#" class="list-group-item list-group-item-action" data-target="formatif">Penilaian Formatif & Kehadiran</a>
                                 </div>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-12">
                                 <div id="form-utama">
                                     <form action="{{ route('penilaian.store') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
