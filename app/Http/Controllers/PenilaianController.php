@@ -71,6 +71,26 @@ class PenilaianController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->input('form_type') === 'formatif') {
+            $data = $request->validate([
+                'id_siswa' => 'required',
+                'id_kategori_penilaian' => 'required',
+                'nilai_formatif' => 'required|numeric',
+                'nilai_kehadiran' => 'required|numeric',
+            ]);
+
+            DB::table('penilaian_formatif')->insert([
+                'id_siswa' => $data['id_siswa'],
+                'id_kategori_penilaian' => $data['id_kategori_penilaian'],
+                'nilai_formatif' => $data['nilai_formatif'],
+                'nilai_kehadiran' => $data['nilai_kehadiran'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            return redirect()->route('penilaian.index')->with('success', 'Berhasil menyimpan penilaian formatif & kehadiran');
+        }
+
         $validate = $request->validate([
             'id_siswa' => 'required',
             'id_pelajaran' => 'required',
@@ -83,7 +103,7 @@ class PenilaianController extends Controller
 
         DB::table('master_penilaian')->insert($validate);
 
-        return redirect()->route('penilaian.index')->with('success','Berhasil melakukan Penilaian');
+        return redirect()->route('penilaian.index')->with('success', 'Berhasil melakukan Penilaian');
 
     }
 
