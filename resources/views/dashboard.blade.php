@@ -658,13 +658,7 @@
                                 <p>Laporan Pmfk</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/laporan-perpmfk"
-                                class="nav-link {{ request()->routeIs('laporan.pmfk') ? 'active' : '' }}">
-                                <i class="fas fa-file-invoice"></i>
-                                <p>Laporan Gab Akademik</p>
-                            </a>
-                        </li>
+
                         <li class="nav-item">
                             <a href="/laporan"
                                 class="nav-link {{ request()->routeIs('laporan.index') ? 'active' : '' }}">
