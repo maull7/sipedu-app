@@ -4,12 +4,31 @@
 <style>
     .penilaian-nav .btn {
         transition: all 0.3s ease-in-out;
-        border-radius: 30px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+        border: 1px solid #dee2e6;
     }
 
     .penilaian-nav .btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .penilaian-nav .btn.active {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+    }
+
+    .penilaian-nav .btn:not(.active) {
+        background-color: white;
+        color: #6c757d;
+    }
+
+    .penilaian-nav .btn:not(.active):hover {
+        color: #007bff;
+        border-color: #007bff;
     }
 
     .fade-in {
@@ -50,6 +69,20 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0">Membuat Penilaian</h1>
+                        <!-- Navigation dipindah ke sini -->
+                        <div class="penilaian-nav mt-3">
+                            <div class="btn-group" role="group" id="menu-penilaian">
+                                <a href="#" class="btn btn-sm active" data-target="utama">
+                                    <i class="fas fa-star me-1"></i> Penilaian Utama
+                                </a>
+                                <a href="#" class="btn btn-sm" data-target="formatif">
+                                    <i class="fas fa-clipboard-check me-1"></i> Formatif & Kehadiran
+                                </a>
+                                <a href="#" class="btn btn-sm" data-target="mental">
+                                    <i class="fas fa-brain me-1"></i> Nilai Mental
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -59,20 +92,6 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="card-body">
-                        <div class="penilaian-nav text-center mb-4">
-                            <div class="btn-group btn-group-lg shadow-sm" role="group" id="menu-penilaian">
-                                <a href="#" class="btn btn-primary active" data-target="utama">
-                                    <i class="fas fa-star me-1"></i> Penilaian Utama
-                                </a>
-                                <a href="#" class="btn btn-outline-primary" data-target="formatif">
-                                    <i class="fas fa-clipboard-check me-1"></i> Formatif & Kehadiran
-                                </a>
-                                <a href="#" class="btn btn-outline-primary" data-target="mental">
-                                    <i class="fas fa-brain me-1"></i> Nilai Mental
-                                </a>
-                            </div>
-                        </div>
-
                         <div class="row">
                             <div class="col-12">
                                 <div id="form-utama">
@@ -281,10 +300,10 @@
         e.preventDefault();
 
         // toggle active
-        menu.querySelectorAll('a').forEach(a => a.classList.remove('active', 'btn-primary'));
-        menu.querySelectorAll('a').forEach(a => a.classList.add('btn-outline-primary'));
-        link.classList.remove('btn-outline-primary');
-        link.classList.add('active', 'btn-primary');
+        menu.querySelectorAll('a').forEach(a => {
+            a.classList.remove('active');
+        });
+        link.classList.add('active');
 
         // animasi transisi form
         const target = link.getAttribute('data-target');
