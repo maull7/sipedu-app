@@ -85,7 +85,8 @@ Route::group(['middleware' => 'auth'], function () {
     //laporan
     Route::get('laporan',[LaporanController::class,'index'])->name('laporan.index');
     Route::get('/laporan/export-excel', [LaporanController::class, 'exportExcel'])->name('laporan.export.excel');
-    Route::get('/export-pdf',[LaporanController::class,'pdf'])->name('laporan.pdf');
+    Route::get('/export-pdf1',[LaporanController::class,'pdfL1'])->name('laporan.pdf1');
+    Route::get('/export-pdf2',[LaporanController::class,'pdf'])->name('laporan.pdf2');
 
     //pengguna
     Route::resource('master_pengguna', MasterPenggunaController::class);

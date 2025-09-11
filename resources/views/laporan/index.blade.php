@@ -17,8 +17,11 @@
                 <a href="{{ route('laporan.export.excel', request()->query()) }}" class="btn btn-success mb-3">
                     <i class="fas fa-file-excel"></i> Export Excel
                 </a>
-                <a href="{{ route('laporan.pdf', request()->query()) }}" class="btn btn-danger mb-3">
-                    <i class="fas fa-file-pdf"></i> Export Pdf
+                <a href="{{ route('laporan.pdf1', request()->query()) }}" class="btn btn-danger mb-3">
+                    <i class="fas fa-file-pdf"></i> Lampiran 1
+                </a>
+                <a href="{{ route('laporan.pdf2', request()->query()) }}" class="btn btn-danger mb-3">
+                    <i class="fas fa-file-pdf"></i> Lampiran 2
                 </a>
 
 
