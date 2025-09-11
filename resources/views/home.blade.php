@@ -225,7 +225,7 @@
                                 </div>
                                 <div class="d-flex align-items-baseline">
                                     <h3 class="font-weight-bold mb-0">
-                                        12
+                                        {{ $data['total_guru'] }}
                                     </h3>
                                     <span class="badge badge-soft-warning ml-2">
                                         <i class="fas fa-check-circle"></i>
@@ -233,7 +233,7 @@
                                 </div>
                             </div>
                             <div class="card-footer border-0 bg-transparent p-0">
-                                <a href="" class="btn btn-link text-warning btn-block">
+                                <a href="{{ route('master_guru.index') }}" class="btn btn-link text-warning btn-block">
                                     Kelola Guru <i class="fas fa-arrow-right ml-1"></i>
                                 </a>
                             </div>
@@ -252,15 +252,15 @@
                                 </div>
                                 <div class="d-flex align-items-baseline">
                                     <h3 class="font-weight-bold mb-0">
-                                        12
+                                        {{ $data['total_siswa'] }}
                                     </h3>
                                     <span class="badge badge-soft-success ml-2">
-                                        <i class="fas fa-check-circle"></i>
+                                        <i class="fas fa-check-circle text-success"></i>
                                     </span>
                                 </div>
                             </div>
                             <div class="card-footer border-0 bg-transparent p-0">
-                                <a href="" class="btn btn-link text-success btn-block">
+                                <a href="{{ route('master_siswa.index') }}" class="btn btn-link text-success btn-block">
                                     Kelola Siswa <i class="fas fa-arrow-right ml-1"></i>
                                 </a>
                             </div>
@@ -279,15 +279,15 @@
                                 </div>
                                 <div class="d-flex align-items-baseline">
                                     <h3 class="font-weight-bold mb-0">
-                                        12
+                                        {{ $data['total_admin'] }}
                                     </h3>
                                     <span class="badge badge-soft-warning ml-2">
-                                        <i class="fas fa-check-circle"></i>
+                                        <i class="fas fa-check-circle text-danger"></i>
                                     </span>
                                 </div>
                             </div>
                             <div class="card-footer border-0 bg-transparent p-0">
-                                <a href="" class="btn btn-link text-danger btn-block">
+                                <a href="{{ route('master_user.index') }}" class="btn btn-link text-danger btn-block">
                                     Kelola Admin <i class="fas fa-arrow-right ml-1"></i>
                                 </a>
                             </div>
@@ -306,15 +306,15 @@
                                 </div>
                                 <div class="d-flex align-items-baseline">
                                     <h3 class="font-weight-bold mb-0">
-                                        12
+                                        {{ $data['total_kelas'] }}
                                     </h3>
                                     <span class="badge badge-soft-primary ml-2">
-                                        <i class="fas fa-check-circle"></i>
+                                        <i class="fas fa-check-circle text-primary"></i>
                                     </span>
                                 </div>
                             </div>
                             <div class="card-footer border-0 bg-transparent p-0">
-                                <a href="" class="btn btn-link text-primary btn-block">
+                                <a href="{{ route('master_kelas.index') }}" class="btn btn-link text-primary btn-block">
                                     Kelola Kelas <i class="fas fa-arrow-right ml-1"></i>
                                 </a>
                             </div>

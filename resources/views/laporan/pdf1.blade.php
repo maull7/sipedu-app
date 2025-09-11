@@ -69,7 +69,7 @@
         table.transcript-table th,
         table.transcript-table td {
             border: 1px solid #000;
-            padding: 6px 8px;
+            padding: 4px 6px;
             vertical-align: middle;
             text-align: center;
         }
@@ -162,7 +162,9 @@
             return trim($hasil);
         }
     @endphp
-
+    @php
+        $no = 1;
+    @endphp
     @foreach ($laporan as $siswa)
         <div class="page">
             <div class="header">
@@ -172,7 +174,7 @@
 
                 <div class="header-right">
                     <strong>LAMPIRAN I</strong><br>
-                    No. Sertifikat : <strong>2501222201</strong><br>
+                    No. Sertifikat : <strong>250122220{{ $no++ }}</strong><br>
                     Nama Siswa : {{ $siswa['nama_siswa'] }}<br>
                     Pangkat/NRP/NIP : {{ $siswa['nip'] }}<br>
                     Nama Dik : {{ $siswa['jurusan'] }}<br>
@@ -251,8 +253,9 @@
 
                             <span class="ttd-space"></span>
 
-                            <p class="ttd-sub underline"><strong>DHANI HERNANDO, S.I.K., M.H.</strong></p>
-                            <p class="ttd-sub">KOMISARIS BESAR POLISI NRP 71080339</p>
+                            <p class="ttd-sub underline"><strong>JONI GETAMALA, S.H.</strong></p>
+                            <p class="ttd-sub">KOMISARIS BESAR POLISI
+                                NRP 70080447</p>
                         </div>
                     </td>
 
@@ -263,8 +266,9 @@
 
                             <span class="ttd-space"></span>
 
-                            <p class="ttd-sub underline"><strong>M.A. TRIZA, S.I.P.</strong></p>
-                            <p class="ttd-sub">AKBP NRP 72060530</p>
+                            <p class="ttd-sub underline"><strong>SAIFUL ANWAR, S.Sos.I., M.A.</strong></p>
+                            <p class="ttd-sub">PEMBINA NIP.
+                                198003302006041002</p>
                         </div>
                     </td>
                 </tr>
