@@ -1,5 +1,48 @@
 @extends('dashboard')
 
+@section('style')
+<style>
+    .penilaian-nav .btn {
+        transition: all 0.3s ease-in-out;
+        border-radius: 30px;
+    }
+
+    .penilaian-nav .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .fade-in {
+        animation: fadeIn 0.4s ease forwards;
+    }
+
+    .fade-out {
+        animation: fadeOut 0.3s ease forwards;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+            transform: translateY(5px);
+        }
+    }
+</style>
+@endsection
+
 @section('konten')
     <div class="content-wrapper">
         <div class="content-header">
@@ -17,18 +60,18 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="penilaian-nav text-center mb-4">
-    <div class="btn-group btn-group-lg shadow-sm" role="group" id="menu-penilaian">
-        <a href="#" class="btn btn-primary active" data-target="utama">
-            <i class="fas fa-star me-1"></i> Penilaian Utama
-        </a>
-        <a href="#" class="btn btn-outline-primary" data-target="formatif">
-            <i class="fas fa-clipboard-check me-1"></i> Formatif & Kehadiran
-        </a>
-        <a href="#" class="btn btn-outline-primary" data-target="mental">
-            <i class="fas fa-brain me-1"></i> Nilai Mental
-        </a>
-    </div>
-</div>
+                            <div class="btn-group btn-group-lg shadow-sm" role="group" id="menu-penilaian">
+                                <a href="#" class="btn btn-primary active" data-target="utama">
+                                    <i class="fas fa-star me-1"></i> Penilaian Utama
+                                </a>
+                                <a href="#" class="btn btn-outline-primary" data-target="formatif">
+                                    <i class="fas fa-clipboard-check me-1"></i> Formatif & Kehadiran
+                                </a>
+                                <a href="#" class="btn btn-outline-primary" data-target="mental">
+                                    <i class="fas fa-brain me-1"></i> Nilai Mental
+                                </a>
+                            </div>
+                        </div>
 
                         <div class="row">
                             <div class="col-12">
@@ -105,7 +148,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="progress">Waktu Penilaian</label>
-                                                    <select name="progress" id="Jenis" class="form-control">
+                                                    <select name="progress" id="progress" class="form-control">
                                                         <option>Pilih waktu Penilaian</option>
                                                         @foreach ($progress as $item)
                                                             <option value="{{ $item }}">{{ $item }}</option>
@@ -261,68 +304,4 @@
     });
 });
 </script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var menu = document.getElementById('menu-penilaian');
-        if (!menu) return;
-
-        menu.addEventListener('click', function (e) {
-            var link = e.target.closest('a[data-target]');
-            if (!link) return;
-            e.preventDefault();
-
-            // Toggle active menu state
-            menu.querySelectorAll('a').forEach(function (a) { a.classList.remove('active'); });
-            link.classList.add('active');
-
-            // Show/Hide forms
-            var target = link.getAttribute('data-target');
-            var utama = document.getElementById('form-utama');
-            var formatif = document.getElementById('form-formatif');
-            var mental = document.getElementById('form-mental');
-            if (target === 'utama') {
-                utama.classList.remove('d-none');
-                formatif.classList.add('d-none');
-                mental.classList.add('d-none');
-            } else if (target === 'formatif') {
-                formatif.classList.remove('d-none');
-                utama.classList.add('d-none');
-                mental.classList.add('d-none');
-            } else if (target === 'mental') {
-                mental.classList.remove('d-none');
-                utama.classList.add('d-none');
-                formatif.classList.add('d-none');
-            }
-        });
-    });
-</script>
 @endsection
-<style>
-    .penilaian-nav .btn {
-    transition: all 0.3s ease-in-out;
-    border-radius: 30px;
-}
-
-.penilaian-nav .btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-.fade-in {
-    animation: fadeIn 0.4s ease forwards;
-}
-
-.fade-out {
-    animation: fadeOut 0.3s ease forwards;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; transform: translateY(5px); }
-}
-
-</style>
