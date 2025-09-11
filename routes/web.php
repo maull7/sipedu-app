@@ -12,6 +12,7 @@ use App\Http\Controllers\KatergoriPenilaianController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotifController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\LaporanPmkController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\MasterGuruController;
 use App\Http\Controllers\PengajuanController;
@@ -83,6 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/export/template-penilaian', [PenilaianController::class, 'exportTemplate'])->name('export.template.penilaian');
     Route::post('/import/nilai',[PenilaianController::class,'importNilai'])->name('import.nilai');
     //laporan
+    Route::get('/laporan-perpmfk',[LaporanPmkController::class,'index'])->name('laporan.pmfk');
     Route::get('laporan',[LaporanController::class,'index'])->name('laporan.index');
     Route::get('/laporan/export-excel', [LaporanController::class, 'exportExcel'])->name('laporan.export.excel');
     Route::get('/export-pdf1',[LaporanController::class,'pdfL1'])->name('laporan.pdf1');
