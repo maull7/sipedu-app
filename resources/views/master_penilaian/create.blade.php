@@ -16,14 +16,21 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="card-body">
+                        <div class="penilaian-nav text-center mb-4">
+    <div class="btn-group btn-group-lg shadow-sm" role="group" id="menu-penilaian">
+        <a href="#" class="btn btn-primary active" data-target="utama">
+            <i class="fas fa-star me-1"></i> Penilaian Utama
+        </a>
+        <a href="#" class="btn btn-outline-primary" data-target="formatif">
+            <i class="fas fa-clipboard-check me-1"></i> Formatif & Kehadiran
+        </a>
+        <a href="#" class="btn btn-outline-primary" data-target="mental">
+            <i class="fas fa-brain me-1"></i> Nilai Mental
+        </a>
+    </div>
+</div>
+
                         <div class="row">
-                            <div class="col-12 mb-3">
-                                <div class="list-group list-group-horizontal" id="menu-penilaian">
-                                    <a href="#" class="list-group-item list-group-item-action active" data-target="utama">Penilaian Utama</a>
-                                    <a href="#" class="list-group-item list-group-item-action" data-target="formatif">Penilaian Formatif & Kehadiran</a>
-                                    <a href="#" class="list-group-item list-group-item-action" data-target="mental">Nilai Mental</a>
-                                </div>
-                            </div>
                             <div class="col-12">
                                 <div id="form-utama">
                                     <form action="{{ route('penilaian.store') }}" method="POST" enctype="multipart/form-data">
@@ -175,22 +182,39 @@
                                 </div>
 
                                 <div id="form-mental" class="d-none">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>ID Siswa</th>
-                                                <th>Nilai Mental</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($nilai_mental as $item)
-                                                <tr>
-                                                    <td>{{ $item->id_siswa }}</td>
-                                                    <td>{{ $item->nilai_mental }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                    <form action="{{ route('penilaian.store') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" name="form_type" value="mental">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="Siswa3">Siswa</label>
+                                                    <select name="id_siswa" id="Siswa3" class="form-control">
+                                                        <option>Pilih Siswa</option>
+                                                        @foreach ($siswa as $item)
+                                                            <option value="{{ $item->id_siswa }}">{{ $item->nama_siswa }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('id_siswa')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="nilai_mental_input">Nilai Mental</label>
+                                                    <input type="number" step="0.01" class="form-control @error('nilai_mental') is-invalid @enderror" id="nilai_mental_input" name="nilai_mental" required>
+                                                    @error('nilai_mental')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer px-0">
+                                            <button type="submit" class="btn btn-success">Simpan</button>
+                                        </div>
+                                    </form>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -203,6 +227,40 @@
 @endsection
 
 @section('script')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const menu = document.getElementById('menu-penilaian');
+    if (!menu) return;
+
+    menu.addEventListener('click', function (e) {
+        const link = e.target.closest('a[data-target]');
+        if (!link) return;
+        e.preventDefault();
+
+        // toggle active
+        menu.querySelectorAll('a').forEach(a => a.classList.remove('active', 'btn-primary'));
+        menu.querySelectorAll('a').forEach(a => a.classList.add('btn-outline-primary'));
+        link.classList.remove('btn-outline-primary');
+        link.classList.add('active', 'btn-primary');
+
+        // animasi transisi form
+        const target = link.getAttribute('data-target');
+        ['utama', 'formatif', 'mental'].forEach(id => {
+            const form = document.getElementById('form-' + id);
+            if (form) {
+                form.classList.add('d-none', 'fade-out');
+                form.classList.remove('fade-in');
+            }
+        });
+
+        const showForm = document.getElementById('form-' + target);
+        if (showForm) {
+            showForm.classList.remove('d-none', 'fade-out');
+            showForm.classList.add('fade-in');
+        }
+    });
+});
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var menu = document.getElementById('menu-penilaian');
@@ -239,3 +297,32 @@
     });
 </script>
 @endsection
+<style>
+    .penilaian-nav .btn {
+    transition: all 0.3s ease-in-out;
+    border-radius: 30px;
+}
+
+.penilaian-nav .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+.fade-in {
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; transform: translateY(5px); }
+}
+
+</style>

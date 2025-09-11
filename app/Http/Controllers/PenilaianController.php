@@ -88,6 +88,20 @@ class PenilaianController extends Controller
             ]);
 
             return redirect()->route('penilaian.index')->with('success', 'Berhasil menyimpan penilaian formatif & kehadiran');
+        } elseif ($request->input('form_type') === 'mental') {
+            $data = $request->validate([
+                'id_siswa' => 'required',
+                'nilai_mental' => 'required|numeric',
+            ]);
+
+            DB::table('nilai_mental')->insert([
+                'id_siswa' => $data['id_siswa'],
+                'nilai_mental' => $data['nilai_mental'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            return redirect()->route('penilaian.index')->with('success', 'Berhasil menyimpan nilai mental');
         }
 
         $validate = $request->validate([
