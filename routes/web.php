@@ -86,7 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/import/nilai',[PenilaianController::class,'importNilai'])->name('import.nilai');
     //laporan
     Route::get('/laporan-perpmfk',[LaporanPmkController::class,'index'])->name('laporan.pmfk');
-    Route::get('/laporan-rekap',[LaporanPmkController::class,'rekap']);
+    Route::get('/laporan-rekap',[LaporanPmkController::class,'rekap'])->name('laporan.rekap');
     Route::get('/nilaix',[LaporanPmkController::class,'nilaiX'])->name('laporan.x');
     Route::get('laporan',[LaporanController::class,'index'])->name('laporan.index');
     Route::get('/laporan/export-excel', [LaporanController::class, 'exportExcel'])->name('laporan.export.excel');

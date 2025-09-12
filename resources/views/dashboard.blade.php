@@ -652,7 +652,7 @@
                         </li>
                         <li class="nav-header">Laporan</li>
                         <li class="nav-item">
-                            <a href="/laporan-perpmfk"
+                            <a href="{{ route('laporan.pmfk') }}"
                                 class="nav-link {{ request()->routeIs('laporan.pmfk') ? 'active' : '' }}">
                                 <i class="fas fa-file-invoice"></i>
                                 <p>Laporan Pmfk</p>

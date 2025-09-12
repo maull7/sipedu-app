@@ -561,6 +561,27 @@
                                         <p>Laporan Nilai</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('laporan.pmfk') }}"
+                                        class="nav-link {{ request()->routeIs('laporan.pmfk') ? 'active' : '' }}">
+                                        <i class="fas fa-file-invoice-dollar"></i>
+                                        <p>Laporan PMFK</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('laporan.rekap') }}"
+                                        class="nav-link {{ request()->routeIs('laporan.rekap') ? 'active' : '' }}">
+                                        <i class="fas fa-clipboard-check"></i>
+                                        <p>Laporan Rekap PMFK</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('laporan.x') }}"
+                                        class="nav-link {{ request()->routeIs('laporan.x') ? 'active' : '' }}">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        <p>Laporan Nilai X</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
 

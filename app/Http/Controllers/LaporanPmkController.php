@@ -169,8 +169,7 @@ class LaporanPmkController extends Controller
     $jurusanList = DB::table('master_jurusan')->get();
     $kelasList = DB::table('master_kelas')->get();
     $progress = ['Progress Test', 'Middle Test', 'Final Test'];
-    dd($laporan);
-    return view('laporan.pmfk', compact('laporan', 'kategori', 'mapelList', 'kategoriList','jurusanList','kelasList','progress'));
+    return view('laporan.pmfk2', compact('laporan', 'kategori', 'mapelList', 'kategoriList','jurusanList','kelasList','progress'));
 }
 
    public function nilaiX(Request $request){
@@ -330,7 +329,7 @@ class LaporanPmkController extends Controller
     $jurusanList = DB::table('master_jurusan')->get();
     $kelasList = DB::table('master_kelas')->get();
 
-    return view('laporan.pmfk', compact('laporan', 'mapelList', 'jurusanList', 'kelasList'));
+    return view('laporan.pmfk2', compact('laporan', 'mapelList', 'jurusanList', 'kelasList'));
 }
 public function rekap(Request $request){
     $query = DB::table('master_penilaian')
@@ -527,7 +526,6 @@ public function rekap(Request $request){
     $jurusanList = DB::table('master_jurusan')->get();
     $kelasList = DB::table('master_kelas')->get();
 
-    dd($laporan);
-    return view('laporan.pmfk', compact('laporan', 'mapelList', 'jurusanList', 'kelasList'));
+    return view('laporan.pmfk2', compact('laporan', 'mapelList', 'jurusanList', 'kelasList'));
 }
 }
