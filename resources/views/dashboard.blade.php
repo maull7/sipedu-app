@@ -657,13 +657,18 @@
                                 <i class="fas fa-file-invoice"></i>
                                 <p>Laporan Pmfk</p>
                             </a>
+                            <a href="{{ route('laporan.x') }}"
+                                class="nav-link {{ request()->routeIs('laporan.x') ? 'active' : '' }}">
+                                <i class="fas fa-file-invoice"></i>
+                                <p>Laporan Nilai X</p>
+                            </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="/laporan"
-                                class="nav-link {{ request()->routeIs('laporan.index') ? 'active' : '' }}">
+                            <a href="{{ route('laporan.rekap') }}"
+                                class="nav-link {{ request()->routeIs('laporan.rekap') ? 'active' : '' }}">
                                 <i class="fas fa-file-invoice"></i>
-                                <p>Laporan</p>
+                                <p>Laporan Rekap</p>
                             </a>
                         </li>
 

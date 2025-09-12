@@ -526,6 +526,7 @@ public function rekap(Request $request){
     $jurusanList = DB::table('master_jurusan')->get();
     $kelasList = DB::table('master_kelas')->get();
 
+
     return view('laporan.pmfk2', compact('laporan', 'mapelList', 'jurusanList', 'kelasList'));
 }
 }
