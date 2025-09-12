@@ -2,47 +2,56 @@
 
 @section('style')
 <style>
+    /* Gaya untuk Navigasi Penilaian */
     .penilaian-nav .btn {
-        transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease;
         border-radius: 8px;
         font-size: 0.875rem;
-        padding: 0.5rem 1rem;
+        font-weight: 500;
+        padding: 0.6rem 1.2rem;
         border: 1px solid #dee2e6;
+        margin: 0 4px;
     }
 
+    /* Efek hover untuk semua tombol navigasi */
     .penilaian-nav .btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
+    /* Tombol Aktif (diubah ke warna hijau) */
     .penilaian-nav .btn.active {
-        background-color: #007bff;
-        border-color: #007bff;
+        background-color: #28a745; /* Warna hijau success */
+        border-color: #28a745;
         color: white;
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3); /* Shadow dengan warna hijau */
     }
 
+    /* Tombol Tidak Aktif */
     .penilaian-nav .btn:not(.active) {
-        background-color: white;
-        color: #6c757d;
+        background-color: #ffffff;
+        color: #495057;
     }
 
+    /* Efek hover untuk tombol tidak aktif (diubah ke warna hijau) */
     .penilaian-nav .btn:not(.active):hover {
-        color: #007bff;
-        border-color: #007bff;
+        color: #28a745;
+        border-color: #28a745;
     }
 
+    /* Animasi Fade-in/Fade-out */
     .fade-in {
-        animation: fadeIn 0.4s ease forwards;
+        animation: fadeIn 0.4s ease-in-out forwards;
     }
 
     .fade-out {
-        animation: fadeOut 0.3s ease forwards;
+        animation: fadeOut 0.3s ease-in-out forwards;
     }
 
     @keyframes fadeIn {
         from {
             opacity: 0;
-            transform: translateY(5px);
+            transform: translateY(10px);
         }
         to {
             opacity: 1;
@@ -53,10 +62,11 @@
     @keyframes fadeOut {
         from {
             opacity: 1;
+            transform: translateY(0);
         }
         to {
             opacity: 0;
-            transform: translateY(5px);
+            transform: translateY(10px);
         }
     }
 </style>
@@ -69,16 +79,15 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0">Membuat Penilaian</h1>
-                        <!-- Navigation dipindah ke sini -->
                         <div class="penilaian-nav mt-3">
                             <div class="btn-group" role="group" id="menu-penilaian">
-                                <a href="#" class="btn btn-sm active" data-target="utama">
+                                <a href="#" class="btn active" data-target="utama">
                                     <i class="fas fa-star me-1"></i> Penilaian Utama
                                 </a>
-                                <a href="#" class="btn btn-sm" data-target="formatif">
+                                <a href="#" class="btn" data-target="formatif">
                                     <i class="fas fa-clipboard-check me-1"></i> Formatif & Kehadiran
                                 </a>
-                                <a href="#" class="btn btn-sm" data-target="mental">
+                                <a href="#" class="btn" data-target="mental">
                                     <i class="fas fa-brain me-1"></i> Nilai Mental
                                 </a>
                             </div>
@@ -309,17 +318,39 @@
         const target = link.getAttribute('data-target');
         ['utama', 'formatif', 'mental'].forEach(id => {
             const form = document.getElementById('form-' + id);
-            if (form) {
-                form.classList.add('d-none', 'fade-out');
-                form.classList.remove('fade-in');
+            if (form && !form.classList.contains('d-none')) {
+                // Hanya jalankan fadeOut jika form sedang terlihat
+                form.classList.add('fade-out');
+                form.addEventListener('animationend', () => {
+                    form.classList.add('d-none');
+                    form.classList.remove('fade-out');
+                }, { once: true });
             }
         });
 
         const showForm = document.getElementById('form-' + target);
         if (showForm) {
-            showForm.classList.remove('d-none', 'fade-out');
+            // Hapus d-none sebelum menambahkan fade-in agar animasi terlihat
+            showForm.classList.remove('d-none');
             showForm.classList.add('fade-in');
+            showForm.addEventListener('animationend', () => {
+                showForm.classList.remove('fade-in');
+            }, { once: true });
         }
+    });
+
+    // Perbaikan kecil pada script: pastikan form yang aktif saat ini tidak di-fade-out dan di-fade-in kembali jika tombol yang sama diklik
+    let currentActive = 'utama'; // default
+    menu.addEventListener('click', function(e) {
+        const link = e.target.closest('a[data-target]');
+        if (!link) return;
+
+        const target = link.getAttribute('data-target');
+        if (target === currentActive) return; // Jangan lakukan apa-apa jika target sama
+        
+        // ... (kode transisi form di atas sudah menangani ini) ...
+        
+        currentActive = target; // update current active
     });
 });
 </script>
