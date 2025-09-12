@@ -25,6 +25,7 @@ use App\Http\Controllers\MasterSiswaController;
 use App\Http\Controllers\MasterTahunAjaranController;
 use App\Http\Controllers\PenilaianController;
 use App\Imports\PenilaianImport;
+use Maatwebsite\Excel\Row;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +86,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/import/nilai',[PenilaianController::class,'importNilai'])->name('import.nilai');
     //laporan
     Route::get('/laporan-perpmfk',[LaporanPmkController::class,'index'])->name('laporan.pmfk');
+    Route::get('/laporan-rekap',[LaporanPmkController::class,'rekap']);
+    Route::get('/nilaix',[LaporanPmkController::class,'nilaiX'])->name('laporan.x');
     Route::get('laporan',[LaporanController::class,'index'])->name('laporan.index');
     Route::get('/laporan/export-excel', [LaporanController::class, 'exportExcel'])->name('laporan.export.excel');
     Route::get('/export-pdf1',[LaporanController::class,'pdfL1'])->name('laporan.pdf1');
@@ -92,7 +95,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //pengguna
     Route::resource('master_pengguna', MasterPenggunaController::class);
-    // Route::get('/', [HomeController::class, 'index']);
+
     Route::get('/home', [HomeController::class, 'index']);
     Route::get('/changePassword', [LoginController::class, 'changeView'])->name('change.view');
     Route::post('/change-password', [LoginController::class, 'changePassword'])->name('change.password');
