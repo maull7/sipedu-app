@@ -128,7 +128,7 @@
                                         $mode = 'index';
                                     } elseif (array_key_exists('JUMLAH AKADEMIK', $first)) {
                                         $mode = 'rekap';
-                                    } elseif (array_key_exists('nilai_final', $first)) {
+                                    } elseif (array_key_exists('total_nilai_akademik_kategori', $first)) {
                                         $mode = 'nilaiX';
                                     }
                                 } elseif (is_object($first)) {
@@ -232,13 +232,14 @@
                                                 <td>{{ $r['kelas'] ?? '-' }}</td>
                                                 <td>{{ $r['jurusan'] ?? '-' }}</td>
                                                 <td>{{ $r['mapel'] ?? '-' }}</td>
-                                                <td class="text-right">{{ $fmt($r['total_akademik'] ?? 0) }}</td>
+                                                <td class="text-right">{{ $fmt($r['total_nilai_akademik_kategori'] ?? 0) }}
+                                                </td>
                                                 <td class="text-right">{{ $fmt($r['nilai_akademik'] ?? 0) }}</td>
                                                 <td class="text-right">{{ $fmt($r['nilai_mental'] ?? 0) }}</td>
                                                 <td class="text-right">{{ $fmt($r['x7'] ?? 0) }}</td>
                                                 <td class="text-right">{{ $fmt($r['x3'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['total'] ?? 0) }}</td>
-                                                <td class="text-right fw-bold">{{ $fmt($r['nilai_final'] ?? 0) }}</td>
+                                                <td class="text-right">{{ $fmt($r['total_akhir'] ?? 0) }}</td>
+                                                <td class="text-right fw-bold">{{ $fmt($r['nilai_akhir'] ?? 0) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
