@@ -144,7 +144,16 @@
                             $fmt = function ($v) {
                                 return is_numeric($v) ? number_format((float) $v, 2, ',', '.') : $v ?? '-';
                             };
+                            // Tentukan route export berdasarkan mode
+                            $exportRoute = $mode === 'nilaiX' ? 'laporan.x.export' : ($mode === 'rekap' ? 'laporan.rekap.export' : 'laporan.pmfk.export');
                         @endphp
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="subtitle">Hasil Data</div>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exportModal">
+                                <i class="fas fa-file-export mr-1"></i> Export
+                            </button>
+                        </div>
 
                         @if (empty($laporan))
                             <div class="alert alert-info mb-0">Tidak ada data untuk filter yang dipilih.</div>
@@ -308,6 +317,31 @@
                 </div>
             </div>
         </section>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exportModalLabel">Export Laporan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Pilih format export untuk mengunduh laporan ini:</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="{{ route($exportRoute, array_merge(request()->query(), ['format' => 'pdf'])) }}" class="btn btn-danger" target="_blank">
+                        <i class="fas fa-file-pdf mr-1"></i> PDF
+                    </a>
+                    <a href="{{ route($exportRoute, array_merge(request()->query(), ['format' => 'excel'])) }}" class="btn btn-primary" target="_blank">
+                        <i class="fas fa-file-excel mr-1"></i> Excel
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script type="text/javascript">

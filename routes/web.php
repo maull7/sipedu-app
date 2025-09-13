@@ -86,8 +86,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/import/nilai',[PenilaianController::class,'importNilai'])->name('import.nilai');
     //laporan
     Route::get('/laporan-perpmfk',[LaporanPmkController::class,'index'])->name('laporan.pmfk');
+    Route::get('/laporan-perpmfk/export',[LaporanPmkController::class,'exportIndex'])->name('laporan.pmfk.export');
     Route::get('/laporan-rekap',[LaporanPmkController::class,'rekap'])->name('laporan.rekap');
+    Route::get('/laporan-rekap/export',[LaporanPmkController::class,'exportRekap'])->name('laporan.rekap.export');
     Route::get('/nilaix',[LaporanPmkController::class,'nilaiX'])->name('laporan.x');
+    Route::get('/nilaix/export',[LaporanPmkController::class,'exportNilaiX'])->name('laporan.x.export');
     Route::get('laporan',[LaporanController::class,'index'])->name('laporan.index');
     Route::get('/laporan/export-excel', [LaporanController::class, 'exportExcel'])->name('laporan.export.excel');
     Route::get('/export-pdf1',[LaporanController::class,'pdfL1'])->name('laporan.pdf1');
