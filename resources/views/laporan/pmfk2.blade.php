@@ -2,34 +2,37 @@
 
 @section('style')
     <style>
-        .table-sticky thead th {
-            position: sticky;
-            top: 0;
-            z-index: 1;
-            background: #e9f2ff;
+        /* Responsive table styles (follow index.blade.php) */
+        .table-responsive {
+            margin-bottom: 1rem;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .nowrap {
-            white-space: nowrap;
-        }
+        /* Custom scrollbar for better UX */
+        .table-responsive::-webkit-scrollbar { height: 8px; }
+        .table-responsive::-webkit-scrollbar-track { background: #f1f1f1; }
+        .table-responsive::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        .table-responsive::-webkit-scrollbar-thumb:hover { background: #555; }
 
-        .text-right {
-            text-align: right;
-        }
+        /* When using DataTables horizontal scroll, keep controls fixed */
+        .dataTables_scrollBody::-webkit-scrollbar { height: 8px; }
+        .dataTables_scrollBody::-webkit-scrollbar-track { background: #f1f1f1; }
+        .dataTables_scrollBody::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        .dataTables_scrollBody::-webkit-scrollbar-thumb:hover { background: #555; }
 
-        .badge-soft {
-            background: #eef6ff;
-            color: #0b5ed7;
-            border: 1px solid #cfe2ff;
-        }
+        .dataTables_wrapper .dataTables_paginate,
+        .dataTables_wrapper .dataTables_filter { white-space: nowrap; }
 
-        .page-title {
-            font-weight: 700;
-            letter-spacing: .2px;
-        }
+        /* Utilities */
+        .text-nowrap { white-space: nowrap !important; }
+        .nowrap { white-space: nowrap; }
+        .text-right { text-align: right; }
+        .badge-soft { background: #eef6ff; color: #0b5ed7; border: 1px solid #cfe2ff; }
+        .page-title { font-weight: 700; letter-spacing: .2px; }
+        .subtitle { color: #6c757d; }
 
-        .subtitle {
-            color: #6c757d;
+        @media screen and (max-width: 768px) {
+            .table td, .table th { padding: .5rem; }
         }
     </style>
 @endsection
@@ -158,8 +161,7 @@
                         @if (empty($laporan))
                             <div class="alert alert-info mb-0">Tidak ada data untuk filter yang dipilih.</div>
                         @elseif ($mode === 'index')
-                            <div class="table-responsive">
-                                <table class="table table-bordered datatable table-hover table-sticky">
+                                <table class="table datatable table-hover text-nowrap" style="width:100%">
                                     <thead>
                                         <tr class="text-center align-middle">
                                             <th class="nowrap">NIP</th>
@@ -210,10 +212,8 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                            </div>
                         @elseif ($mode === 'nilaiX')
-                            <div class="table-responsive">
-                                <table class="table table-bordered datatable table-hover table-sticky">
+                                <table class="table datatable table-hover text-nowrap" style="width:100%">
                                     <thead>
                                         <tr class="text-center align-middle">
                                             <th class="nowrap">NIP</th>
@@ -253,10 +253,8 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                            </div>
                         @elseif ($mode === 'rekap')
-                            <div class="table-responsive">
-                                <table class="table table-bordered datatable table-hover table-sticky">
+                                <table class="table datatable table-hover text-nowrap" style="width:100%">
                                     <thead>
                                         <tr class="text-center align-middle">
                                             <th class="nowrap">NIP</th>
@@ -308,7 +306,6 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                            </div>
                         @else
                             <div class="alert alert-warning mb-0">Struktur data laporan tidak dikenali. Pastikan controller
                                 mengirimkan data sesuai format.</div>
@@ -345,10 +342,19 @@
     </div>
 
     <script type="text/javascript">
-        $(document).ready(function() {
-            $('.datatable').DataTable({
-                responsive: true
+        // Buat kontrol (search & pagination) tetap, hanya isi tabel yang scroll horizontal
+        $(function() {
+            var $tables = $('.datatable');
+            $tables.DataTable({
+                responsive: false,
+                scrollX: true,
+                autoWidth: false,
+                pageLength: 10,
+                order: []
             });
+
+            // Penyesuaian kolom setelah render
+            $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
         });
     </script>
 @endsection

@@ -37,6 +37,8 @@
 
     @yield('style')
 
+    
+
     <style>
         /* Core minimalist styling */
         body {
@@ -142,28 +144,29 @@
             flex-direction: column;
             height: calc(100vh - 70px);
             padding: 0;
+            min-height: 0; /* Penting untuk flexbox */
         }
 
         .menu-area {
             flex: 1;
             overflow-y: auto;
+            overflow-x: hidden;
             padding: 0.5rem 0;
-            margin-bottom: 65px;
-            /* Space for logout button */
-            max-height: calc(100vh - 200px);
-            /* Adjust based on header + footer height */
+            /* Mengurangi height agar ada space untuk footer */
+            max-height: calc(100vh - 240px);
         }
 
         .sidebar-footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
+            position: sticky; /* Ubah dari relative ke sticky */
+            bottom: 0; /* Stick ke bottom */
+            margin-top: auto;
             width: 100%;
             padding: 1rem;
             background: #fff;
             border-top: 1px solid rgba(0, 0, 0, 0.05);
             box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.03);
-            z-index: 1000;
+            z-index: 10; /* Pastikan di atas konten lain */
+            flex-shrink: 0; /* Jangan shrink footer */
             transition: all 0.3s ease;
         }
 
@@ -176,17 +179,22 @@
             width: 100%;
             padding: 0.75rem;
             border-radius: 6px;
-            color: #1c970c;
+            color: #dc3545;
             background-color: rgba(220, 53, 69, 0.1);
             transition: all 0.3s ease;
             font-weight: 500;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            min-height: 44px;
         }
 
         .logout-button:hover {
-            background-color: #1c970c;
-            color: #fff;
+            background-color: #dc3545;
+            color: #fff !important;
             text-decoration: none;
             transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
         }
 
         .logout-button i {
@@ -194,54 +202,17 @@
             font-size: 1rem;
             width: 22px;
             text-align: center;
+            transition: all 0.3s ease;
         }
+
+        /* Remove overlay above logout to avoid covering */
+        .menu-area::after { display: none; }
+
+
+        /* Sidebar mini adjustments removed for simpler, predictable layout */
 
         /* Add fade effect above logout button */
-        .menu-area::after {
-            content: '';
-            position: absolute;
-            bottom: 65px;
-            left: 0;
-            width: 100%;
-            height: 20px;
-            background: linear-gradient(to top, #fff, rgba(255, 255, 255, 0));
-            pointer-events: none;
-        }
-
-
-        /* Sidebar mini adjustments */
-        .sidebar-mini.sidebar-collapse .main-sidebar:hover .sidebar-footer {
-            width: 250px;
-        }
-
-        .sidebar-mini.sidebar-collapse .main-sidebar:not(:hover) .sidebar-footer {
-            width: 4.6rem;
-        }
-
-        .sidebar-mini.sidebar-collapse .main-sidebar:not(:hover) .logout-button {
-            padding: 0.75rem 0;
-            justify-content: center;
-        }
-
-        .sidebar-mini.sidebar-collapse .main-sidebar:not(:hover) .logout-button i {
-            margin-right: 0;
-        }
-
-        .sidebar-mini.sidebar-collapse .main-sidebar:not(:hover) .logout-button span {
-            display: none;
-        }
-
-        /* Add fade effect above logout button */
-        .menu-area::after {
-            content: '';
-            position: fixed;
-            bottom: 65px;
-            left: 0;
-            width: 250px;
-            height: 20px;
-            background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-            pointer-events: none;
-        }
+        /* Removed fixed overlay variant to avoid covering footer */
 
         /* Ensure proper scrollbar styling */
         .menu-area::-webkit-scrollbar {
@@ -418,6 +389,10 @@
             color: white !important;
         }
 
+        .logout-button .logout-text {
+            transition: all 0.3s ease;
+        }
+
         .brand {
             display: flex;
             align-items: center;
@@ -461,7 +436,44 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        @media (max-width: 768px) {
+    .sidebar {
+        height: calc(100vh - 60px); /* Sesuaikan untuk mobile */
+    }
+    
+    .menu-area {
+        max-height: calc(100vh - 200px);
+    }
+    
+    .sidebar-footer {
+        padding: 0.75rem;
+    }
+    
+    .logout-button {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .sidebar {
+        height: calc(100vh - 56px);
+    }
+    
+    .menu-area {
+        max-height: calc(100vh - 180px);
+    }
+    
+    .logout-button {
+        padding: 0.5rem;
+        min-height: 40px;
+    }
+}
     </style>
+
+    <!-- SIPEDU Theme Overrides (loaded last to override inline styles) -->
+    <link rel="stylesheet" href="{{ url('css/theme.css') }}">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -548,7 +560,7 @@
 
 
         <!-- Sidebar -->
-        <div class="sidebar d-flex flex-column" style="height: 100%;"">
+        <div class="sidebar d-flex flex-column">
             <!-- Menu area -->
             <div class="menu-area">
                 <nav class="mt-1">
@@ -657,13 +669,14 @@
                                 <i class="fas fa-file-invoice"></i>
                                 <p>Laporan Pmfk</p>
                             </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('laporan.x') }}"
                                 class="nav-link {{ request()->routeIs('laporan.x') ? 'active' : '' }}">
                                 <i class="fas fa-file-invoice"></i>
                                 <p>Laporan Nilai X</p>
                             </a>
                         </li>
-
                         <li class="nav-item">
                             <a href="{{ route('laporan.rekap') }}"
                                 class="nav-link {{ request()->routeIs('laporan.rekap') ? 'active' : '' }}">
@@ -766,6 +779,55 @@
 </html>
 
 <style>
+    /* Untuk sidebar yang collapsed */
+.sidebar-mini.sidebar-collapse .sidebar-footer {
+    display: block;
+    width: 100%;
+    position: sticky;
+    bottom: 0;
+}
+
+.sidebar-mini.sidebar-collapse .logout-button {
+    justify-content: center;
+    padding: 0.75rem 0.5rem;
+}
+
+.sidebar-mini.sidebar-collapse .logout-text {
+    display: none;
+}
+
+.sidebar-mini.sidebar-collapse .logout-button i {
+    margin-right: 0;
+    font-size: 1.1rem;
+}
+
+/* Pastikan scrollbar styling tidak mengganggu */
+.menu-area::-webkit-scrollbar {
+    width: 4px;
+}
+
+.menu-area::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.menu-area::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
+
+.menu-area::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Perbaikan untuk container utama */
+.main-sidebar {
+    overflow: hidden; /* Prevent content overflow */
+}
+
+/* Ensure proper spacing */
+.nav-sidebar {
+    padding-bottom: 1rem; /* Add some bottom padding to prevent cutoff */
+}
     /* Add these styles to hide sidebar and make content full width */
     .sidebar-mini.sidebar-collapse .main-sidebar {
         display: none !important;

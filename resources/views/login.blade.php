@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="{{ url('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ url('dist/css/adminlte.min.css') }}">
+    <!-- SIPEDU Theme Overrides -->
+    <link rel="stylesheet" href="{{ url('css/theme.css') }}">
     <style>
         /* Base styles matching dashboard */
         body {
