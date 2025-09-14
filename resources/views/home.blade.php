@@ -328,6 +328,111 @@
                 </div>
 
 
+                <!-- Quick Links + Recent Activity -->
+                <div class="row mt-2">
+                    <div class="col-xl-4 col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-white"><strong>Master</strong></div>
+                            <div class="card-body py-3">
+                                <div class="d-flex flex-wrap" style="gap:10px">
+                                    <a href="{{ url('/master_user') }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-user-shield mr-1"></i> User</a>
+                                    <a href="{{ url('/master_guru') }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-chalkboard-teacher mr-1"></i> Guru</a>
+                                    <a href="{{ url('/master_siswa') }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-user-graduate mr-1"></i> Siswa</a>
+                                    <a href="{{ url('/master_kelas') }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-chalkboard mr-1"></i> Kelas</a>
+                                    <a href="{{ url('/master_mapel') }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-book-open mr-1"></i> Mapel</a>
+                                    <a href="{{ url('/master_kategori') }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-layer-group mr-1"></i> Kategori</a>
+                                    <a href="{{ url('/master_tahun') }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-calendar-alt mr-1"></i> Tahun</a>
+                                    <a href="{{ url('/master_jurusan') }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-project-diagram mr-1"></i> Jurusan</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-white"><strong>Penilaian</strong></div>
+                            <div class="card-body py-3">
+                                <a href="{{ route('penilaian.index') }}" class="btn btn-sm btn-outline-success mr-2 mb-2"><i class="fas fa-list-alt mr-1"></i> Nilai Tersedia</a>
+                                <a href="{{ url('/penilaian/create') }}" class="btn btn-sm btn-outline-primary mb-2"><i class="fas fa-plus-circle mr-1"></i> Tambah Nilai</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-12 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-white"><strong>Laporan</strong></div>
+                            <div class="card-body py-3">
+                                <a href="{{ route('laporan.pmfk') }}" class="btn btn-sm btn-outline-info mr-2 mb-2"><i class="fas fa-file-alt mr-1"></i> PMFK</a>
+                                <a href="{{ route('laporan.x') }}" class="btn btn-sm btn-outline-info mr-2 mb-2"><i class="fas fa-chart-line mr-1"></i> Nilai X</a>
+                                <a href="{{ route('laporan.rekap') }}" class="btn btn-sm btn-outline-info mb-2"><i class="fas fa-clipboard-list mr-1"></i> Rekap</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-8 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                <strong>Aktivitas Terbaru</strong>
+                                <a href="{{ route('penilaian.index') }}" class="btn btn-sm btn-outline-secondary">Lihat Semua</a>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table mb-0 table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Nama</th>
+                                                <th>Kelas</th>
+                                                <th>Mapel</th>
+                                                <th>Kategori</th>
+                                                <th class="text-right">Nilai</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php $rows = $recent_penilaian ?? []; @endphp
+                                            @forelse ($rows as $n)
+                                                @php
+                                                    $nama     = data_get($n, 'nama_siswa', '-');
+                                                    $kelas    = data_get($n, 'nama_kelas', '-');
+                                                    $mapel    = data_get($n, 'nama_mapel', '-');
+                                                    $kategori = data_get($n, 'kategori_penilaian', '-');
+                                                    $nilaiRaw = data_get($n, 'nilai');
+                                                @endphp
+                                                <tr>
+                                                    <td>{{ $nama }}</td>
+                                                    <td>{{ $kelas }}</td>
+                                                    <td>{{ $mapel }}</td>
+                                                    <td>{{ $kategori }}</td>
+                                                    <td class="text-right">{{ is_numeric($nilaiRaw) ? number_format((float)$nilaiRaw, 2, ',', '.') : ($nilaiRaw ?? '-') }}</td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted p-3">Belum ada aktivitas penilaian terbaru.</td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-white"><strong>Ringkas</strong></div>
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-2"><i class="fas fa-user-shield mr-2 text-danger"></i> Admin: <strong>{{ $data['total_admin'] ?? 0 }}</strong></li>
+                                    <li class="mb-2"><i class="fas fa-chalkboard-teacher mr-2 text-warning"></i> Guru: <strong>{{ $data['total_guru'] ?? 0 }}</strong></li>
+                                    <li class="mb-2"><i class="fas fa-user-graduate mr-2 text-success"></i> Siswa: <strong>{{ $data['total_siswa'] ?? 0 }}</strong></li>
+                                    <li class="mb-2"><i class="fas fa-chalkboard mr-2 text-primary"></i> Kelas: <strong>{{ $data['total_kelas'] ?? 0 }}</strong></li>
+                                    <li class="mb-2"><i class="fas fa-book-open mr-2 text-info"></i> Mapel: <strong>{{ $data['total_mapel'] ?? 0 }}</strong></li>
+                                    <li class="mb-2"><i class="fas fa-layer-group mr-2 text-secondary"></i> Kategori: <strong>{{ $data['total_kategori'] ?? 0 }}</strong></li>
+                                    <li class="mb-0"><i class="fas fa-list-alt mr-2 text-success"></i> Penilaian: <strong>{{ $data['total_penilaian'] ?? 0 }}</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Secondary Stats Row -->
                 <div class="row mb-4">
                     <div class="col-12">

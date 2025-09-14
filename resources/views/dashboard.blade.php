@@ -666,21 +666,21 @@
                         <li class="nav-item">
                             <a href="{{ route('laporan.pmfk') }}"
                                 class="nav-link {{ request()->routeIs('laporan.pmfk') ? 'active' : '' }}">
-                                <i class="fas fa-file-invoice"></i>
+                                <i class="fas fa-file-alt"></i>
                                 <p>Laporan Pmfk</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('laporan.x') }}"
                                 class="nav-link {{ request()->routeIs('laporan.x') ? 'active' : '' }}">
-                                <i class="fas fa-file-invoice"></i>
+                                <i class="fas fa-chart-bar"></i>
                                 <p>Laporan Nilai X</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('laporan.rekap') }}"
                                 class="nav-link {{ request()->routeIs('laporan.rekap') ? 'active' : '' }}">
-                                <i class="fas fa-file-invoice"></i>
+                                <i class="fas fa-clipboard-list"></i>
                                 <p>Laporan Rekap</p>
                             </a>
                         </li>
