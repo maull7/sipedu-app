@@ -556,13 +556,13 @@ public function rekap(Request $request){
 
         // Klasifikasi berdasarkan Nilai Akhir
         $klasifikasi = '';
-        if ($nilaiAkhir >= 8.6) {
+        if ($nilaiAkhir >= 86) {
             $klasifikasi = 'SANGAT MEMUASKAN';
-        } elseif ($nilaiAkhir >= 8.1) {
+        } elseif ($nilaiAkhir >= 81) {
             $klasifikasi = 'MEMUASKAN';
-        } elseif ($nilaiAkhir >= 7.5) {
+        } elseif ($nilaiAkhir >= 75) {
             $klasifikasi = 'BAIK';
-        } elseif ($nilaiAkhir >= 6.5) {
+        } elseif ($nilaiAkhir >= 65) {
             $klasifikasi = 'CUKUP';
         } else {
             $klasifikasi = 'KURANG';
@@ -591,19 +591,36 @@ public function rekap(Request $request){
             'X3' => $x3,
             'TOTAL' => $total,
             'Nilai Akhir' => $nilaiAkhir,
-            'Klasifikasi' => $klasifikasi,
-            'Ranking' => 0 // Will be set after sorting
+            'Klasifikasi' => $klasifikasi
         ];
     }
 
-    // Sorting berdasarkan Nilai Akhir untuk ranking
+    // PERBAIKAN: Sorting berdasarkan Nilai Akhir untuk ranking SETELAH filtering
     usort($laporan, function($a, $b) {
+        // Jika nilai akhir sama, urutkan berdasarkan nama
+        if ($a['Nilai Akhir'] == $b['Nilai Akhir']) {
+            return strcmp($a['nama_siswa'], $b['nama_siswa']);
+        }
         return $b['Nilai Akhir'] <=> $a['Nilai Akhir'];
     });
 
-    // Assign ranking
+    // PERBAIKAN: Assign ranking berdasarkan data yang sudah difilter
+    $currentRank = 1;
+    $previousScore = null;
+    $sameScoreCount = 0;
+
     foreach ($laporan as $index => &$data) {
-        $data['Ranking'] = $index + 1;
+        if ($previousScore !== null && $data['Nilai Akhir'] < $previousScore) {
+            $currentRank += $sameScoreCount;
+            $sameScoreCount = 1;
+        } elseif ($previousScore !== null && $data['Nilai Akhir'] == $previousScore) {
+            $sameScoreCount++;
+        } else {
+            $sameScoreCount = 1;
+        }
+
+        $data['Ranking'] = $currentRank;
+        $previousScore = $data['Nilai Akhir'];
     }
 
     // Ambil list untuk dropdown filter
@@ -885,7 +902,7 @@ public function rekap(Request $request){
     /**
      * Export for Rekap view
      */
-    public function exportRekap(Request $request)
+   public function exportRekap(Request $request)
     {
         // Duplicate core query from rekap()
         $query = DB::table('master_penilaian')
@@ -932,6 +949,7 @@ public function rekap(Request $request){
 
         $nilaiData = $query->get();
         $nilaiPerKategori = [];
+
         foreach ($nilaiData as $row) {
             $key = $row->id_siswa . '_' . $row->id_kategori;
             if (!isset($nilaiPerKategori[$key])) {
@@ -1008,18 +1026,20 @@ public function rekap(Request $request){
             $x3 = round($nilaiMental * 3, 2);
             $total = round($x7 + $x3, 2);
             $nilaiAkhir = round($total / 10, 2);
+
             $klasifikasi = '';
-            if ($nilaiAkhir >= 8.6) {
+            if ($nilaiAkhir >= 86) {
                 $klasifikasi = 'SANGAT MEMUASKAN';
-            } elseif ($nilaiAkhir >= 8.1) {
+            } elseif ($nilaiAkhir >= 81) {
                 $klasifikasi = 'MEMUASKAN';
-            } elseif ($nilaiAkhir >= 7.5) {
+            } elseif ($nilaiAkhir >= 75) {
                 $klasifikasi = 'BAIK';
-            } elseif ($nilaiAkhir >= 6.5) {
+            } elseif ($nilaiAkhir >= 65) {
                 $klasifikasi = 'CUKUP';
             } else {
                 $klasifikasi = 'KURANG';
             }
+
             $laporan[] = [
                 'id_siswa' => $siswaData['id_siswa'],
                 'nama_siswa' => $siswaData['nama_siswa'],
@@ -1039,22 +1059,44 @@ public function rekap(Request $request){
                 'X3' => $x3,
                 'TOTAL' => $total,
                 'Nilai Akhir' => $nilaiAkhir,
-                'Klasifikasi' => $klasifikasi,
-                'Ranking' => 0,
+                'Klasifikasi' => $klasifikasi
             ];
         }
 
+        // PERBAIKAN: Sorting berdasarkan Nilai Akhir untuk ranking SETELAH filtering
         usort($laporan, function ($a, $b) {
+            // Jika nilai akhir sama, urutkan berdasarkan nama
+            if ($a['Nilai Akhir'] == $b['Nilai Akhir']) {
+                return strcmp($a['nama_siswa'], $b['nama_siswa']);
+            }
             return $b['Nilai Akhir'] <=> $a['Nilai Akhir'];
         });
+
+        // PERBAIKAN: Assign ranking berdasarkan data yang sudah difilter dengan penanganan nilai sama
+        $currentRank = 1;
+        $previousScore = null;
+        $sameScoreCount = 0;
+
         foreach ($laporan as $index => &$data) {
-            $data['Ranking'] = $index + 1;
+            if ($previousScore !== null && $data['Nilai Akhir'] < $previousScore) {
+                $currentRank += $sameScoreCount;
+                $sameScoreCount = 1;
+            } elseif ($previousScore !== null && $data['Nilai Akhir'] == $previousScore) {
+                $sameScoreCount++;
+            } else {
+                $sameScoreCount = 1;
+            }
+
+            $data['Ranking'] = $currentRank;
+            $previousScore = $data['Nilai Akhir'];
         }
 
+        // Export based on format
         $format = strtolower($request->query('format', 'pdf'));
         if ($format === 'excel') {
             return Excel::download(new ViewExport('exports.pmfk2_rekap', compact('laporan'), 'PMFK Rekap'), 'pmfk-rekap.xlsx');
         }
+
         $pdf = Pdf::loadView('exports.pmfk2_rekap', compact('laporan'))
             ->setPaper('a4', 'landscape');
         return $pdf->download('pmfk-rekap.pdf');

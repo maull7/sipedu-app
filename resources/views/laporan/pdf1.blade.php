@@ -69,7 +69,7 @@
         table.transcript-table th,
         table.transcript-table td {
             border: 1px solid #000;
-            padding: 4px 6px;
+            padding: 2px 4px;
             vertical-align: middle;
             text-align: center;
         }
@@ -134,6 +134,16 @@
         img {
             max-width: 100%;
         }
+
+        /* Additional styles */
+        .ranking-info {
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+            background: #f0f0f0;
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
     </style>
 </head>
 
@@ -162,10 +172,8 @@
             return trim($hasil);
         }
     @endphp
-    @php
-        $no = 1;
-    @endphp
-    @foreach ($laporan as $siswa)
+
+    @foreach ($laporan as $index => $siswa)
         <div class="page">
             <div class="header">
                 <div class="header-left">
@@ -174,18 +182,18 @@
 
                 <div class="header-right">
                     <strong>LAMPIRAN I</strong><br>
-                    No. Sertifikat : <strong>250122220{{ $no++ }}</strong><br>
+                    No. Sertifikat : <strong>250122220{{ str_pad($index + 1, 3, '0', STR_PAD_LEFT) }}</strong><br>
                     Nama Siswa : {{ $siswa['nama_siswa'] }}<br>
                     Pangkat/NRP/NIP : {{ $siswa['nip'] }}<br>
                     Nama Dik : {{ $siswa['jurusan'] }}<br>
-                    PNS POLRI {{ $siswa['kelas'] }}<br>
-                    POLRI {{ $siswa['kelas'] }} - {{ $siswa['tahun'] }}<br>
-                    WAKTU PENILAIAN : {{ $siswa['progress'] }}
+                    Mata Pelajaran : {{ $siswa['mapel'] }}
                 </div>
             </div>
 
+
+
             <!-- Judul -->
-            <div class="title">Daftar Nilai Akhir Intelek</div>
+            <div class="title">Daftar Nilai Akhir {{ $siswa['mapel'] }}</div>
             <div class="subtitle">( TRANSKRIP )</div>
 
             <!-- Tabel transkrip -->
@@ -193,7 +201,7 @@
                 <thead>
                     <tr>
                         <th rowspan="2" style="width:6%;">NO.</th>
-                        <th rowspan="2" style="text-align:center;">MATA PELAJARAN</th>
+                        <th rowspan="2" style="text-align:center;">KATEGORI PENILAIAN</th>
                         <th colspan="2" style="width:28%;">NILAI</th>
                     </tr>
                     <tr>
@@ -204,41 +212,54 @@
                 <tbody>
                     @php
                         $no = 1;
-                        $totalNilai = 0;
-                        $jumlahMapel = count($siswa['nilai_kategori']);
+                        $kategoriNilai = [
+                            'MENDENGAR' => $siswa['MENDENGAR'],
+                            'MEMBACA' => $siswa['MEMBACA'],
+                            'MENULIS' => $siswa['MENULIS'],
+                            'BERBICARA' => $siswa['BERBICARA'],
+                            'TATA BAHASA' => $siswa['TATA BAHASA'],
+                        ];
                     @endphp
 
-                    @foreach ($siswa['nilai_kategori'] as $kategori => $nilai)
-                        @php
-                            $nilaiFormatted = number_format(floatval($nilai), 2, ',', '.');
-                            $totalNilai += floatval($nilai);
-                        @endphp
-                        <tr>
-                            <td>{{ $no }}.</td>
-                            <td class="text-left"><em>{{ $kategori }}</em></td>
-                            <td>{{ $nilaiFormatted }}</td>
-                            <td class="text-left">{{ ucwords(terbilang($nilai)) }}</td>
-                        </tr>
-                        @php $no++; @endphp
+                    @foreach ($kategoriNilai as $kategori => $nilai)
+                        @if ($nilai > 0)
+                            @php
+                                $nilaiFormatted = number_format(floatval($nilai), 2, ',', '.');
+                            @endphp
+                            <tr>
+                                <td>{{ $no }}.</td>
+                                <td class="text-left"><em>{{ $kategori }}</em></td>
+                                <td>{{ $nilaiFormatted }}</td>
+                                <td class="text-left">{{ ucwords(terbilang($nilai)) }}</td>
+                            </tr>
+                            @php $no++; @endphp
+                        @endif
                     @endforeach
 
-                    <!-- Jumlah -->
+
                     <tr>
                         <td></td>
-                        <td class="text-left"><strong>JUMLAH</strong></td>
-                        <td><strong>{{ number_format($totalNilai, 2, ',', '.') }}</strong></td>
-                        <td class="text-left"><strong>{{ ucwords(terbilang($totalNilai)) }}</strong></td>
+                        <td class="text-left"><strong>RATA-RATA AKADEMIK</strong></td>
+                        <td><strong>{{ number_format($siswa['NILAI RATA-RATA AKADEMIK'], 2, ',', '.') }}</strong></td>
+                        <td class="text-left">
+                            <strong>{{ ucwords(terbilang($siswa['NILAI RATA-RATA AKADEMIK'])) }}</strong>
+                        </td>
                     </tr>
 
-                    <!-- Rata-rata -->
-                    @php
-                        $rataRata = $jumlahMapel > 0 ? $totalNilai / $jumlahMapel : 0;
-                    @endphp
+
                     <tr>
                         <td></td>
-                        <td class="text-left"><strong>RATA-RATA</strong></td>
-                        <td><strong>{{ number_format($rataRata, 2, ',', '.') }}</strong></td>
-                        <td class="text-left"><strong>{{ ucwords(terbilang($rataRata)) }}</strong></td>
+                        <td class="text-left"><strong>TOTAL</strong></td>
+                        <td><strong>{{ number_format($siswa['TOTAL'], 2, ',', '.') }}</strong></td>
+                        <td class="text-left"><strong>{{ ucwords(terbilang($siswa['TOTAL'])) }}</strong></td>
+                    </tr>
+
+                    <!-- Nilai Akhir -->
+                    <tr style="background-color: #f9f9f9;">
+                        <td></td>
+                        <td class="text-left"><strong>NILAI AKHIR</strong></td>
+                        <td><strong>{{ number_format($siswa['Nilai Akhir'], 2, ',', '.') }}</strong></td>
+                        <td class="text-left"><strong>{{ ucwords(terbilang($siswa['Nilai Akhir'])) }}</strong></td>
                     </tr>
                 </tbody>
             </table>

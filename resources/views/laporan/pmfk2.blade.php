@@ -9,30 +9,80 @@
         }
 
         /* Custom scrollbar for better UX */
-        .table-responsive::-webkit-scrollbar { height: 8px; }
-        .table-responsive::-webkit-scrollbar-track { background: #f1f1f1; }
-        .table-responsive::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
-        .table-responsive::-webkit-scrollbar-thumb:hover { background: #555; }
+        .table-responsive::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
 
         /* When using DataTables horizontal scroll, keep controls fixed */
-        .dataTables_scrollBody::-webkit-scrollbar { height: 8px; }
-        .dataTables_scrollBody::-webkit-scrollbar-track { background: #f1f1f1; }
-        .dataTables_scrollBody::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
-        .dataTables_scrollBody::-webkit-scrollbar-thumb:hover { background: #555; }
+        .dataTables_scrollBody::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
 
         .dataTables_wrapper .dataTables_paginate,
-        .dataTables_wrapper .dataTables_filter { white-space: nowrap; }
+        .dataTables_wrapper .dataTables_filter {
+            white-space: nowrap;
+        }
 
         /* Utilities */
-        .text-nowrap { white-space: nowrap !important; }
-        .nowrap { white-space: nowrap; }
-        .text-right { text-align: right; }
-        .badge-soft { background: #eef6ff; color: #0b5ed7; border: 1px solid #cfe2ff; }
-        .page-title { font-weight: 700; letter-spacing: .2px; }
-        .subtitle { color: #6c757d; }
+        .text-nowrap {
+            white-space: nowrap !important;
+        }
+
+        .nowrap {
+            white-space: nowrap;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .badge-soft {
+            background: #eef6ff;
+            color: #0b5ed7;
+            border: 1px solid #cfe2ff;
+        }
+
+        .page-title {
+            font-weight: 700;
+            letter-spacing: .2px;
+        }
+
+        .subtitle {
+            color: #6c757d;
+        }
 
         @media screen and (max-width: 768px) {
-            .table td, .table th { padding: .5rem; }
+
+            .table td,
+            .table th {
+                padding: .5rem;
+            }
         }
     </style>
 @endsection
@@ -83,30 +133,7 @@
                                     @endisset
                                 </select>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Kategori Penilaian</label>
-                                <select name="kategori" class="form-control">
-                                    <option value="">Semua Kategori</option>
-                                    @isset($kategoriList)
-                                        @foreach ($kategoriList as $kat)
-                                            <option value="{{ $kat->id_kategori }}"
-                                                {{ (string) request('kategori') === (string) $kat->id_kategori ? 'selected' : '' }}>
-                                                {{ $kat->kategori_penilaian }}
-                                            </option>
-                                        @endforeach
-                                    @endisset
-                                    @empty($kategoriList)
-                                        @isset($kategori)
-                                            @foreach ($kategori as $id => $nama)
-                                                <option value="{{ $id }}"
-                                                    {{ (string) request('kategori') === (string) $id ? 'selected' : '' }}>
-                                                    {{ $nama }}
-                                                </option>
-                                            @endforeach
-                                        @endisset
-                                    @endempty
-                                </select>
-                            </div>
+
                             <div class="col-12 mt-2">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-filter me-1"></i> Terapkan Filter
@@ -148,7 +175,12 @@
                                 return is_numeric($v) ? number_format((float) $v, 2, ',', '.') : $v ?? '-';
                             };
                             // Tentukan route export berdasarkan mode
-                            $exportRoute = $mode === 'nilaiX' ? 'laporan.x.export' : ($mode === 'rekap' ? 'laporan.rekap.export' : 'laporan.pmfk.export');
+                            $exportRoute =
+                                $mode === 'nilaiX'
+                                    ? 'laporan.x.export'
+                                    : ($mode === 'rekap'
+                                        ? 'laporan.rekap.export'
+                                        : 'laporan.pmfk.export');
                         @endphp
 
                         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -161,151 +193,150 @@
                         @if (empty($laporan))
                             <div class="alert alert-info mb-0">Tidak ada data untuk filter yang dipilih.</div>
                         @elseif ($mode === 'index')
-                                <table class="table datatable table-hover text-nowrap" style="width:100%">
-                                    <thead>
-                                        <tr class="text-center align-middle">
-                                            <th class="nowrap">NIP</th>
-                                            <th>Nama</th>
-                                            <th class="nowrap">JK</th>
-                                            <th>Kelas</th>
-                                            <th>Jurusan</th>
-                                            <th>Mapel</th>
-                                            <th>Kategori</th>
-                                            <th>Progress Test</th>
-                                            <th>Middle Test</th>
-                                            <th>Final Test</th>
-                                            <th>Formatif</th>
-                                            <th>Kehadiran</th>
-                                            <th class="nowrap">10% (PT)</th>
-                                            <th class="nowrap">30% (MT)</th>
-                                            <th class="nowrap">40% (FT)</th>
-                                            <th class="nowrap">10% (Formatif)</th>
-                                            <th class="nowrap">10% (Kehadiran)</th>
-                                            <th class="nowrap">Nilai Akademik</th>
+                            <table class="table datatable table-hover text-nowrap" style="width:100%">
+                                <thead>
+                                    <tr class="text-center align-middle">
+                                        <th class="nowrap">NIP</th>
+                                        <th>Nama</th>
+                                        <th class="nowrap">JK</th>
+                                        <th>Kelas</th>
+                                        <th>Jurusan</th>
+                                        <th>Mapel</th>
+                                        <th>Kategori</th>
+                                        <th>Progress Test</th>
+                                        <th>Middle Test</th>
+                                        <th>Final Test</th>
+                                        <th>Formatif</th>
+                                        <th>Kehadiran</th>
+                                        <th class="nowrap">10% (PT)</th>
+                                        <th class="nowrap">30% (MT)</th>
+                                        <th class="nowrap">40% (FT)</th>
+                                        <th class="nowrap">10% (Formatif)</th>
+                                        <th class="nowrap">10% (Kehadiran)</th>
+                                        <th class="nowrap">Nilai Akademik</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($laporan as $r)
+                                        @php $r = (array)$r; @endphp
+                                        <tr>
+                                            <td class="nowrap">{{ $r['nip'] ?? '-' }}</td>
+                                            <td>{{ $r['nama_siswa'] ?? '-' }}</td>
+                                            <td class="text-center">{{ $r['jk'] ?? '-' }}</td>
+                                            <td>{{ $r['kelas'] ?? '-' }}</td>
+                                            <td>{{ $r['jurusan'] ?? '-' }}</td>
+                                            <td>{{ $r['mapel'] ?? '-' }}</td>
+                                            <td><span class="badge badge-soft">{{ $r['kategori_penilaian'] ?? '-' }}</span>
+                                            </td>
+                                            <td class="text-right">{{ $fmt($r['Progress Test'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['Middle Test'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['Final Test'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['nilai_formatif'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['nilai_kehadiran'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['10%'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['30%'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['40%'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['10%_formatif'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['10%_kehadiran'] ?? 0) }}</td>
+                                            <td class="text-right fw-bold">{{ $fmt($r['nilai_akademik'] ?? 0) }}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($laporan as $r)
-                                            @php $r = (array)$r; @endphp
-                                            <tr>
-                                                <td class="nowrap">{{ $r['nip'] ?? '-' }}</td>
-                                                <td>{{ $r['nama_siswa'] ?? '-' }}</td>
-                                                <td class="text-center">{{ $r['jk'] ?? '-' }}</td>
-                                                <td>{{ $r['kelas'] ?? '-' }}</td>
-                                                <td>{{ $r['jurusan'] ?? '-' }}</td>
-                                                <td>{{ $r['mapel'] ?? '-' }}</td>
-                                                <td><span
-                                                        class="badge badge-soft">{{ $r['kategori_penilaian'] ?? '-' }}</span>
-                                                </td>
-                                                <td class="text-right">{{ $fmt($r['Progress Test'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['Middle Test'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['Final Test'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['nilai_formatif'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['nilai_kehadiran'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['10%'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['30%'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['40%'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['10%_formatif'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['10%_kehadiran'] ?? 0) }}</td>
-                                                <td class="text-right fw-bold">{{ $fmt($r['nilai_akademik'] ?? 0) }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         @elseif ($mode === 'nilaiX')
-                                <table class="table datatable table-hover text-nowrap" style="width:100%">
-                                    <thead>
-                                        <tr class="text-center align-middle">
-                                            <th class="nowrap">NIP</th>
-                                            <th>Nama</th>
-                                            <th>JK</th>
-                                            <th>Kelas</th>
-                                            <th>Jurusan</th>
-                                            <th>Mapel</th>
-                                            <th class="nowrap">Total Akademik</th>
-                                            <th class="nowrap">Rata-rata Akademik</th>
-                                            <th class="nowrap">Nilai Mental</th>
-                                            <th class="nowrap">X7 (70%)</th>
-                                            <th class="nowrap">X3 (30%)</th>
-                                            <th class="nowrap">TOTAL</th>
-                                            <th class="nowrap">Nilai Akhir</th>
+                            <table class="table datatable table-hover text-nowrap" style="width:100%">
+                                <thead>
+                                    <tr class="text-center align-middle">
+                                        <th class="nowrap">NIP</th>
+                                        <th>Nama</th>
+                                        <th>JK</th>
+                                        <th>Kelas</th>
+                                        <th>Jurusan</th>
+                                        <th>Mapel</th>
+                                        <th class="nowrap">Total Akademik</th>
+                                        <th class="nowrap">Rata-rata Akademik</th>
+                                        <th class="nowrap">Nilai Mental</th>
+                                        <th class="nowrap">X7 (70%)</th>
+                                        <th class="nowrap">X3 (30%)</th>
+                                        <th class="nowrap">TOTAL</th>
+                                        <th class="nowrap">Nilai Akhir</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($laporan as $r)
+                                        @php $r = (array)$r; @endphp
+                                        <tr>
+                                            <td class="nowrap">{{ $r['nip'] ?? '-' }}</td>
+                                            <td>{{ $r['nama_siswa'] ?? '-' }}</td>
+                                            <td class="text-center">{{ $r['jk'] ?? '-' }}</td>
+                                            <td>{{ $r['kelas'] ?? '-' }}</td>
+                                            <td>{{ $r['jurusan'] ?? '-' }}</td>
+                                            <td>{{ $r['mapel'] ?? '-' }}</td>
+                                            <td class="text-right">{{ $fmt($r['total_nilai_akademik_kategori'] ?? 0) }}
+                                            </td>
+                                            <td class="text-right">{{ $fmt($r['nilai_akademik'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['nilai_mental'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['x7'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['x3'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['total_akhir'] ?? 0) }}</td>
+                                            <td class="text-right fw-bold">{{ $fmt($r['nilai_akhir'] ?? 0) }}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($laporan as $r)
-                                            @php $r = (array)$r; @endphp
-                                            <tr>
-                                                <td class="nowrap">{{ $r['nip'] ?? '-' }}</td>
-                                                <td>{{ $r['nama_siswa'] ?? '-' }}</td>
-                                                <td class="text-center">{{ $r['jk'] ?? '-' }}</td>
-                                                <td>{{ $r['kelas'] ?? '-' }}</td>
-                                                <td>{{ $r['jurusan'] ?? '-' }}</td>
-                                                <td>{{ $r['mapel'] ?? '-' }}</td>
-                                                <td class="text-right">{{ $fmt($r['total_nilai_akademik_kategori'] ?? 0) }}
-                                                </td>
-                                                <td class="text-right">{{ $fmt($r['nilai_akademik'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['nilai_mental'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['x7'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['x3'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['total_akhir'] ?? 0) }}</td>
-                                                <td class="text-right fw-bold">{{ $fmt($r['nilai_akhir'] ?? 0) }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         @elseif ($mode === 'rekap')
-                                <table class="table datatable table-hover text-nowrap" style="width:100%">
-                                    <thead>
-                                        <tr class="text-center align-middle">
-                                            <th class="nowrap">NIP</th>
-                                            <th>Nama</th>
-                                            <th>Kelas</th>
-                                            <th>Jurusan</th>
-                                            <th>Mapel</th>
-                                            <th>MENDENGAR</th>
-                                            <th>MEMBACA</th>
-                                            <th>MENULIS</th>
-                                            <th>BERBICARA</th>
-                                            <th>TATA BAHASA</th>
-                                            <th class="nowrap">JUMLAH AKADEMIK</th>
-                                            <th class="nowrap">RATA-RATA AKADEMIK</th>
-                                            <th class="nowrap">X7 (70%)</th>
-                                            <th class="nowrap">RATA-RATA MENTAL</th>
-                                            <th class="nowrap">X3 (30%)</th>
-                                            <th class="nowrap">TOTAL</th>
-                                            <th class="nowrap">Nilai Akhir</th>
-                                            <th class="nowrap">Ranking</th>
-                                            <th class="nowrap">Klasifikasi</th>
+                            <table class="table datatable table-hover text-nowrap" style="width:100%">
+                                <thead>
+                                    <tr class="text-center align-middle">
+                                        <th class="nowrap">NIP</th>
+                                        <th>Nama</th>
+                                        <th>Kelas</th>
+                                        <th>Jurusan</th>
+                                        <th>Mapel</th>
+                                        <th>MENDENGAR</th>
+                                        <th>MEMBACA</th>
+                                        <th>MENULIS</th>
+                                        <th>BERBICARA</th>
+                                        <th>TATA BAHASA</th>
+                                        <th class="nowrap">JUMLAH AKADEMIK</th>
+                                        <th class="nowrap">RATA-RATA AKADEMIK</th>
+                                        <th class="nowrap">X7 (70%)</th>
+                                        <th class="nowrap">RATA-RATA MENTAL</th>
+                                        <th class="nowrap">X3 (30%)</th>
+                                        <th class="nowrap">TOTAL</th>
+                                        <th class="nowrap">Nilai Akhir</th>
+                                        <th class="nowrap">Ranking</th>
+                                        <th class="nowrap">Klasifikasi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($laporan as $r)
+                                        @php $r = (array)$r; @endphp
+                                        <tr>
+                                            <td class="nowrap">{{ $r['nip'] ?? '-' }}</td>
+                                            <td>{{ $r['nama_siswa'] ?? '-' }}</td>
+                                            <td>{{ $r['kelas'] ?? '-' }}</td>
+                                            <td>{{ $r['jurusan'] ?? '-' }}</td>
+                                            <td>{{ $r['mapel'] ?? '-' }}</td>
+                                            <td class="text-right">{{ $fmt($r['MENDENGAR'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['MEMBACA'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['MENULIS'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['BERBICARA'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['TATA BAHASA'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['JUMLAH AKADEMIK'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['NILAI RATA-RATA AKADEMIK'] ?? 0) }}
+                                            </td>
+                                            <td class="text-right">{{ $fmt($r['X7'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['NILAI RATA-RATA MENTAL'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['X3'] ?? 0) }}</td>
+                                            <td class="text-right">{{ $fmt($r['TOTAL'] ?? 0) }}</td>
+                                            <td class="text-right fw-bold">{{ $fmt($r['Nilai Akhir'] ?? 0) }}</td>
+                                            <td class="text-center">{{ $r['Ranking'] ?? '-' }}</td>
+                                            <td class="text-center">{{ $r['Klasifikasi'] ?? '-' }}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($laporan as $r)
-                                            @php $r = (array)$r; @endphp
-                                            <tr>
-                                                <td class="nowrap">{{ $r['nip'] ?? '-' }}</td>
-                                                <td>{{ $r['nama_siswa'] ?? '-' }}</td>
-                                                <td>{{ $r['kelas'] ?? '-' }}</td>
-                                                <td>{{ $r['jurusan'] ?? '-' }}</td>
-                                                <td>{{ $r['mapel'] ?? '-' }}</td>
-                                                <td class="text-right">{{ $fmt($r['MENDENGAR'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['MEMBACA'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['MENULIS'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['BERBICARA'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['TATA BAHASA'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['JUMLAH AKADEMIK'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['NILAI RATA-RATA AKADEMIK'] ?? 0) }}
-                                                </td>
-                                                <td class="text-right">{{ $fmt($r['X7'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['NILAI RATA-RATA MENTAL'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['X3'] ?? 0) }}</td>
-                                                <td class="text-right">{{ $fmt($r['TOTAL'] ?? 0) }}</td>
-                                                <td class="text-right fw-bold">{{ $fmt($r['Nilai Akhir'] ?? 0) }}</td>
-                                                <td class="text-center">{{ $r['Ranking'] ?? '-' }}</td>
-                                                <td class="text-center">{{ $r['Klasifikasi'] ?? '-' }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         @else
                             <div class="alert alert-warning mb-0">Struktur data laporan tidak dikenali. Pastikan controller
                                 mengirimkan data sesuai format.</div>
@@ -317,7 +348,8 @@
     </div>
 
     <!-- Export Modal -->
-    <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -330,12 +362,22 @@
                     <p>Pilih format export untuk mengunduh laporan ini:</p>
                 </div>
                 <div class="modal-footer">
-                    <a href="{{ route($exportRoute, array_merge(request()->query(), ['format' => 'pdf'])) }}" class="btn btn-danger" target="_blank">
-                        <i class="fas fa-file-pdf mr-1"></i> PDF
-                    </a>
-                    <a href="{{ route($exportRoute, array_merge(request()->query(), ['format' => 'excel'])) }}" class="btn btn-primary" target="_blank">
+                    <a href="{{ route($exportRoute, array_merge(request()->query(), ['format' => 'excel'])) }}"
+                        class="btn btn-primary" target="_blank">
                         <i class="fas fa-file-excel mr-1"></i> Excel
                     </a>
+                    <a href="{{ route($exportRoute, array_merge(request()->query(), ['format' => 'pdf'])) }}"
+                        class="btn btn-danger" target="_blank">
+                        <i class="fas fa-file-pdf mr-1"></i> PDF
+                    </a>
+                    @if ($mode === 'rekap')
+                        <a href="{{ route('laporan.pdf1', request()->query()) }}" class="btn btn-danger">
+                            <i class="fas fa-file-pdf mr-1"></i> Lampiran 1
+                        </a>
+                        <a href="{{ route('laporan.pdf2', request()->query()) }}" class="btn btn-danger">
+                            <i class="fas fa-file-pdf mr-1"></i> Lampiran 2
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>
