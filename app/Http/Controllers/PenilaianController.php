@@ -7,7 +7,11 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PenilaianTemplateExport;
+use App\Exports\PenilaianFormatifTemplateExport;
+use App\Exports\NilaiMentalTemplateExport;
 use App\Imports\ImportPenilaian;
+use App\Imports\ImportPenilaianFormatif;
+use App\Imports\ImportNilaiMental;
 
 class PenilaianController extends Controller
 {
@@ -31,17 +35,41 @@ class PenilaianController extends Controller
             'master_kategori_penilaian.kategori_penilaian'
         );
 
-            // ✅ Tambahkan filter jika ada request pelajaran
+            // ??? Tambahkan filter jika ada request pelajaran
             if ($request->filled('pelajaran')) {
                 $query->where('master_penilaian.id_pelajaran', $request->pelajaran);
             }
 
             $data = $query->get();
 
+            // Data Formatif & Kehadiran
+            $dataFormatif = DB::table('penilaian_formatif')
+                ->leftJoin('master_siswa', 'master_siswa.id_siswa', '=', 'penilaian_formatif.id_siswa')
+                ->leftJoin('master_kelas', 'master_kelas.id_kelas', '=', 'master_siswa.id_kelas')
+                ->leftJoin('master_kategori_penilaian', 'master_kategori_penilaian.id_kategori', '=', 'penilaian_formatif.id_kategori_penilaian')
+                ->select(
+                    'penilaian_formatif.*',
+                    'master_siswa.nama_siswa',
+                    'master_kelas.nama_kelas',
+                    'master_kategori_penilaian.kategori_penilaian'
+                )
+                ->get();
+
+            // Data Nilai Mental
+            $dataMental = DB::table('nilai_mental')
+                ->leftJoin('master_siswa', 'master_siswa.id_siswa', '=', 'nilai_mental.id_siswa')
+                ->leftJoin('master_kelas', 'master_kelas.id_kelas', '=', 'master_siswa.id_kelas')
+                ->select(
+                    'nilai_mental.*',
+                    'master_siswa.nama_siswa',
+                    'master_kelas.nama_kelas'
+                )
+                ->get();
+
             // Untuk dropdown filter
             $mapel = DB::table('master_pelajaran')->get();
 
-            return view('master_penilaian.index', compact('data', 'mapel'));
+            return view('master_penilaian.index', compact('data', 'dataFormatif', 'dataMental', 'mapel'));
         }
 
 
@@ -193,12 +221,28 @@ class PenilaianController extends Controller
 
         return Excel::download(new PenilaianTemplateExport($kategoriPenilaian), 'template_penilaian.xlsx');
     }
+    public function exportTemplateFormatif()
+    {
+        $kategoriPenilaian = DB::table('master_kategori_penilaian')
+            ->pluck('kategori_penilaian')
+            ->toArray();
+
+        return Excel::download(new PenilaianFormatifTemplateExport($kategoriPenilaian), 'template_penilaian_formatif.xlsx');
+    }
+
+    public function exportTemplateMental()
+    {
+        return Excel::download(new NilaiMentalTemplateExport(), 'template_nilai_mental.xlsx');
+    }
     public function importNilai(Request $request)
-{
-    // validasi input file
-    $request->validate([
-        'file' => 'required|mimes:xlsx,xls,csv'
-    ]);
+    {
+        // Hindari timeout saat import jumlah besar
+        try { set_time_limit(0); } catch (\Throwable $t) {}
+        try { ini_set('memory_limit', '1024M'); } catch (\Throwable $t) {}
+        // validasi input file
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
 
 
 
@@ -206,9 +250,43 @@ class PenilaianController extends Controller
         // jalankan proses import
         Excel::import(new ImportPenilaian, $request->file('file'));
 
-        return redirect()->back()->with('success', 'Data penilaian berhasil diimport.');
+        return redirect()->route('penilaian.index', ['tab' => 'utama'])->with('success', 'Data penilaian utama berhasil diimport.');
     } catch (\Exception $e) {
         return redirect()->back()->with('error', 'Gagal import data: ' . $e->getMessage());
     }
 }
+
+    public function importNilaiFormatif(Request $request)
+    {
+        try { set_time_limit(0); } catch (\Throwable $t) {}
+        try { ini_set('memory_limit', '1024M'); } catch (\Throwable $t) {}
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+
+        try {
+            Excel::import(new ImportPenilaianFormatif, $request->file('file'));
+            return redirect()->route('penilaian.index', ['tab' => 'formatif'])->with('success', 'Data penilaian formatif & kehadiran berhasil diimport.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal import data formatif: ' . $e->getMessage());
+        }
+    }
+
+    public function importNilaiMental(Request $request)
+    {
+        try { set_time_limit(0); } catch (\Throwable $t) {}
+        try { ini_set('memory_limit', '1024M'); } catch (\Throwable $t) {}
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+
+        try {
+            Excel::import(new ImportNilaiMental, $request->file('file'));
+            return redirect()->route('penilaian.index', ['tab' => 'mental'])->with('success', 'Data nilai mental berhasil diimport.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal import data nilai mental: ' . $e->getMessage());
+        }
+    }
 }
+
+

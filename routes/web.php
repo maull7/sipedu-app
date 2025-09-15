@@ -82,8 +82,23 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('master_jabatan', MasterJabatanController::class);
 
     Route::resource('penilaian',PenilaianController::class);
-    Route::get('/export/template-penilaian', [PenilaianController::class, 'exportTemplate'])->name('export.template.penilaian');
-    Route::post('/import/nilai',[PenilaianController::class,'importNilai'])->name('import.nilai');
+    // Template + Import Penilaian Utama
+    Route::get('/export/template-penilaian', [PenilaianController::class, 'exportTemplate'])
+        ->name('export.template.penilaian');
+    Route::post('/import/nilai',[PenilaianController::class,'importNilai'])
+        ->name('import.nilai');
+
+    // Template + Import Penilaian Formatif & Kehadiran
+    Route::get('/export/template-penilaian-formatif', [PenilaianController::class, 'exportTemplateFormatif'])
+        ->name('export.template.penilaian.formatif');
+    Route::post('/import/nilai-formatif', [PenilaianController::class, 'importNilaiFormatif'])
+        ->name('import.nilai.formatif');
+
+    // Template + Import Nilai Mental
+    Route::get('/export/template-nilai-mental', [PenilaianController::class, 'exportTemplateMental'])
+        ->name('export.template.nilai.mental');
+    Route::post('/import/nilai-mental', [PenilaianController::class, 'importNilaiMental'])
+        ->name('import.nilai.mental');
     //laporan
     Route::get('/laporan-perpmfk',[LaporanPmkController::class,'index'])->name('laporan.pmfk');
     Route::get('/laporan-perpmfk/export',[LaporanPmkController::class,'exportIndex'])->name('laporan.pmfk.export');

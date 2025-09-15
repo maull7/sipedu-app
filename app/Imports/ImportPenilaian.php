@@ -7,66 +7,108 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 
-class ImportPenilaian implements ToCollection, WithHeadingRow
+class ImportPenilaian implements ToCollection, WithHeadingRow, WithCalculatedFormulas
 {
+    protected $siswaMap = [];
+    protected $mapelMap = [];
+    protected $kategoriMap = [];
+
+    public function __construct()
+    {
+        // Preload mapping untuk menghindari query per baris
+        try {
+            DB::connection()->disableQueryLog();
+        } catch (\Throwable $t) {
+            // ignore
+        }
+
+        $this->siswaMap = [];
+        $siswaRows = DB::table('master_siswa')->select('id_siswa','nip')->get();
+        foreach ($siswaRows as $s) {
+            $this->siswaMap[trim((string)$s->nip)] = $s->id_siswa;
+        }
+
+        // Mapel: key lower-case untuk toleransi perbedaan kapitalisasi
+        $mapel = DB::table('master_pelajaran')->select('id_pelajaran', 'nama_mapel')->get();
+        foreach ($mapel as $m) {
+            $this->mapelMap[$this->toLower(trim((string) $m->nama_mapel))] = $m->id_pelajaran;
+        }
+
+        // Kategori: key lower-case
+        $kategori = DB::table('master_kategori_penilaian')->select('id_kategori', 'kategori_penilaian')->get();
+        foreach ($kategori as $k) {
+            $this->kategoriMap[$this->toLower(trim((string) $k->kategori_penilaian))] = $k->id_kategori;
+        }
+    }
+
     public function collection(Collection $rows)
     {
+        $batch = [];
+
         foreach ($rows as $row) {
             try {
-                // Skip baris kosong
-                if (
-                    empty($row['nip']) &&
-                    empty($row['mata_pelajaran']) &&
-                    empty($row['kategori_nilai'])
-                ) {
+                // Skip baris kosong minimal
+                $nip = isset($row['nip_nrp']) ? trim((string) $row['nip_nrp']) : '';
+                $mapelNama = isset($row['mata_pelajaran']) ? trim((string) $row['mata_pelajaran']) : '';
+                $kategoriNama = isset($row['kategori_nilai']) ? trim((string) $row['kategori_nilai']) : '';
+                if ($nip === '' && $mapelNama === '' && $kategoriNama === '') {
                     continue;
                 }
 
-                // === Ambil id_siswa dari master_siswa (nip) ===
-
-                $siswa = DB::table('master_siswa')
-                    ->where('nip', $row['nip_nrp'])
-                    ->first();
-
-                if (!$siswa) {
-                    Log::warning("Siswa dengan NIP {$row['nip']} tidak ditemukan, skip baris.");
+                $idSiswa = $this->siswaMap[$nip] ?? null;
+                if (!$idSiswa) {
+                    // minimal logging agar tidak lambat
                     continue;
                 }
 
-                // === Ambil id_pelajaran dari master_pelajaran (nama_pelajaran) ===
-                $pelajaran = DB::table('master_pelajaran')
-                    ->where('nama_mapel', $row['mata_pelajaran'])
-                    ->first();
-
-                if (!$pelajaran) {
-                    Log::warning("Pelajaran {$row['mata_pelajaran']} tidak ditemukan, skip baris.");
+                $idMapel = $this->mapelMap[$this->toLower($mapelNama)] ?? null;
+                if (!$idMapel) {
                     continue;
                 }
 
-                // === Ambil id_kategori_penilaian dari master_kategori_penilaian (nama_kategori) ===
-                $kategori = DB::table('master_kategori_penilaian')
-                    ->where('kategori_penilaian', $row['kategori_nilai'])
-                    ->first();
-
-                if (!$kategori) {
-                    Log::warning("Kategori {$row['kategori_nilai']} tidak ditemukan, skip baris.");
+                $idKategori = $this->kategoriMap[$this->toLower($kategoriNama)] ?? null;
+                if (!$idKategori) {
                     continue;
                 }
 
-                // === Insert ke tabel penilaian ===
-                DB::table('master_penilaian')->insert([
-                    'id_siswa'              => $siswa->id_siswa,
-                    'id_pelajaran'          => $pelajaran->id_pelajaran,
-                    'id_kategori_penilaian' => $kategori->id_kategori,
-                    'nilai'                 => $row['nilai'] ?? null,
-                    'kepribadian'           => $row['nilai_intelek'] ?? null,   // mapping ke kolom kepribadian
-                    'intelek'               => $row['nilai_pengetahuan'] ?? null, // mapping ke kolom intelek
-                    'progress'              => $row['waktu_penilaian'] ?? null,
-                ]);
+                // Sanitisasi angka (dukung koma sebagai desimal)
+                $nilaiStr = isset($row['nilai']) ? (is_string($row['nilai']) ? str_replace([','], ['.'], trim($row['nilai'])) : $row['nilai']) : null;
+                $nilaiIntelekStr = isset($row['nilai_intelek']) ? (is_string($row['nilai_intelek']) ? str_replace([','], ['.'], trim($row['nilai_intelek'])) : $row['nilai_intelek']) : null;
+                $nilaiPengetahuanStr = isset($row['nilai_pengetahuan']) ? (is_string($row['nilai_pengetahuan']) ? str_replace([','], ['.'], trim($row['nilai_pengetahuan'])) : $row['nilai_pengetahuan']) : null;
+
+                $batch[] = [
+                    'id_siswa'              => $idSiswa,
+                    'id_pelajaran'          => $idMapel,
+                    'id_kategori_penilaian' => $idKategori,
+                    'nilai'                 => ($nilaiStr !== null && $nilaiStr !== '') ? (float) $nilaiStr : null,
+                    'kepribadian'           => ($nilaiIntelekStr !== null && $nilaiIntelekStr !== '') ? (float) $nilaiIntelekStr : null,
+                    'intelek'               => ($nilaiPengetahuanStr !== null && $nilaiPengetahuanStr !== '') ? (float) $nilaiPengetahuanStr : null,
+                    'progress'              => isset($row['waktu_penilaian']) ? $row['waktu_penilaian'] : null,
+                ];
+
+                if (count($batch) >= 500) {
+                    DB::table('master_penilaian')->insert($batch);
+                    $batch = [];
+                }
             } catch (\Exception $e) {
-                Log::error("Gagal import penilaian: " . $e->getMessage());
+                Log::error('Gagal import penilaian: ' . $e->getMessage());
             }
         }
+
+        if (!empty($batch)) {
+            try {
+                DB::table('master_penilaian')->insert($batch);
+            } catch (\Exception $e) {
+                Log::error('Gagal insert batch penilaian: ' . $e->getMessage());
+                throw $e;
+            }
+        }
+    }
+
+    private function toLower($s)
+    {
+        return function_exists('mb_strtolower') ? mb_strtolower($s, 'UTF-8') : strtolower($s);
     }
 }
