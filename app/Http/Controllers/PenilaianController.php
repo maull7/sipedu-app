@@ -209,6 +209,81 @@ class PenilaianController extends Controller
         return redirect()->back()->with('success','Menghapus Nilai ');
     }
 
+    public function editFormatif($id)
+    {
+        $formatif = DB::table('penilaian_formatif')->where('id', $id)->first();
+        if (!$formatif) {
+            abort(404);
+        }
+
+        $siswa = DB::table('master_siswa')->get();
+        $kategori = DB::table('master_kategori_penilaian')->get();
+
+        return view('master_penilaian.edit_formatif', compact('formatif', 'siswa', 'kategori'));
+    }
+
+    public function updateFormatif(Request $request, $id)
+    {
+        $data = $request->validate([
+            'id_siswa' => 'required',
+            'id_kategori_penilaian' => 'required',
+            'nilai_formatif' => 'required|numeric',
+            'nilai_kehadiran' => 'required|numeric',
+        ]);
+
+        DB::table('penilaian_formatif')->where('id', $id)->update([
+            'id_siswa' => $data['id_siswa'],
+            'id_kategori_penilaian' => $data['id_kategori_penilaian'],
+            'nilai_formatif' => $data['nilai_formatif'],
+            'nilai_kehadiran' => $data['nilai_kehadiran'],
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('penilaian.index', ['tab' => 'formatif'])->with('success', 'Berhasil mengubah penilaian formatif & kehadiran');
+    }
+
+    public function destroyFormatif($id)
+    {
+        DB::table('penilaian_formatif')->where('id', $id)->delete();
+
+        return redirect()->route('penilaian.index', ['tab' => 'formatif'])->with('success', 'Berhasil menghapus penilaian formatif & kehadiran');
+    }
+
+    public function editMental($id)
+    {
+        $mental = DB::table('nilai_mental')->where('id', $id)->first();
+        if (!$mental) {
+            abort(404);
+        }
+
+        $siswa = DB::table('master_siswa')->get();
+
+        return view('master_penilaian.edit_mental', compact('mental', 'siswa'));
+    }
+
+    public function updateMental(Request $request, $id)
+    {
+        $data = $request->validate([
+            'id_siswa' => 'required',
+            'nilai_mental' => 'required|numeric',
+        ]);
+
+        DB::table('nilai_mental')->where('id', $id)->update([
+            'id_siswa' => $data['id_siswa'],
+            'nilai_mental' => $data['nilai_mental'],
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('penilaian.index', ['tab' => 'mental'])->with('success', 'Berhasil mengubah nilai mental');
+    }
+
+    public function destroyMental($id)
+    {
+        DB::table('nilai_mental')->where('id', $id)->delete();
+
+        return redirect()->route('penilaian.index', ['tab' => 'mental'])->with('success', 'Berhasil menghapus nilai mental');
+    }
+
     public function exportTemplate()
     {
         // Ambil kategori penilaian dari database

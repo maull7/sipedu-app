@@ -99,6 +99,20 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('export.template.nilai.mental');
     Route::post('/import/nilai-mental', [PenilaianController::class, 'importNilaiMental'])
         ->name('import.nilai.mental');
+
+    Route::get('/penilaian-formatif/{id}/edit', [PenilaianController::class, 'editFormatif'])
+        ->name('penilaian.formatif.edit');
+    Route::put('/penilaian-formatif/{id}', [PenilaianController::class, 'updateFormatif'])
+        ->name('penilaian.formatif.update');
+    Route::delete('/penilaian-formatif/{id}', [PenilaianController::class, 'destroyFormatif'])
+        ->name('penilaian.formatif.destroy');
+
+    Route::get('/nilai-mental/{id}/edit', [PenilaianController::class, 'editMental'])
+        ->name('penilaian.mental.edit');
+    Route::put('/nilai-mental/{id}', [PenilaianController::class, 'updateMental'])
+        ->name('penilaian.mental.update');
+    Route::delete('/nilai-mental/{id}', [PenilaianController::class, 'destroyMental'])
+        ->name('penilaian.mental.destroy');
     //laporan
     Route::get('/laporan-perpmfk',[LaporanPmkController::class,'index'])->name('laporan.pmfk');
     Route::get('/laporan-perpmfk/export',[LaporanPmkController::class,'exportIndex'])->name('laporan.pmfk.export');

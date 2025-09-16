@@ -240,6 +240,7 @@
                                         <th width="20%">Kategori Penilaian</th>
                                         <th width="15%">Nilai Formatif</th>
                                         <th width="15%">Nilai Kehadiran</th>
+                                        <th width="10%">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -250,7 +251,36 @@
                                             <td>{{ $f->kategori_penilaian }}</td>
                                             <td>{{ $f->nilai_formatif }}</td>
                                             <td>{{ $f->nilai_kehadiran }}</td>
+                                            <td>
+                                                <a href="{{ route('penilaian.formatif.edit', $f->id) }}" class="btn btn-warning btn-sm">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteFormatifModal{{ $f->id }}">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </td>
                                         </tr>
+                                        <div class="modal fade" id="deleteFormatifModal{{ $f->id }}" tabindex="-1" aria-labelledby="deleteFormatifModalLabel{{ $f->id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="deleteFormatifModalLabel{{ $f->id }}">Konfirmasi</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">Jika Anda menekan tombol hapus maka data akan terhapus.</div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                                                        <form action="{{ route('penilaian.formatif.destroy', $f->id) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger">Hapus</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -296,6 +326,7 @@
                                         <th width="20%">Nama Siswa</th>
                                         <th width="15%">Kelas</th>
                                         <th width="15%">Nilai Mental</th>
+                                        <th width="10%">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -304,7 +335,36 @@
                                             <td>{{ $m->nama_siswa }}</td>
                                             <td>{{ $m->nama_kelas }}</td>
                                             <td>{{ $m->nilai_mental }}</td>
+                                            <td>
+                                                <a href="{{ route('penilaian.mental.edit', $m->id) }}" class="btn btn-warning btn-sm">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteMentalModal{{ $m->id }}">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </td>
                                         </tr>
+                                        <div class="modal fade" id="deleteMentalModal{{ $m->id }}" tabindex="-1" aria-labelledby="deleteMentalModalLabel{{ $m->id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="deleteMentalModalLabel{{ $m->id }}">Konfirmasi</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">Jika Anda menekan tombol hapus maka data akan terhapus.</div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                                                        <form action="{{ route('penilaian.mental.destroy', $m->id) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger">Hapus</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
                                 </tbody>
                             </table>
