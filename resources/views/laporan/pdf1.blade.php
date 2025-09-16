@@ -184,9 +184,10 @@
                     <strong>LAMPIRAN I</strong><br>
                     No. Sertifikat : <strong>250122220{{ str_pad($index + 1, 3, '0', STR_PAD_LEFT) }}</strong><br>
                     Nama Siswa : {{ $siswa['nama_siswa'] }}<br>
+                    NOSIS : {{ $siswa['nik'] }} <br>
                     Pangkat/NRP/NIP : {{ $siswa['nip'] }}<br>
                     Nama Dik : {{ $siswa['jurusan'] }}<br>
-                    Mata Pelajaran : {{ $siswa['mapel'] }}
+                    Mata Pelajaran : {{ $siswa['mapel'] }} <br>
                 </div>
             </div>
 

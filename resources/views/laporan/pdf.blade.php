@@ -117,10 +117,12 @@
                     <strong>LAMPIRAN II</strong><br>
                     No. Sertifikat : <strong>2501222201</strong><br>
                     Nama Siswa : {{ $siswa['nama_siswa'] }}<br>
+                    NOSIS : {{ $siswa['nik'] }} <br>
                     Pangkat/NRP/NIP : {{ $siswa['nip'] }}<br>
                     Nama Dik : {{ $siswa['jurusan'] }}<br>
                     PNS POLRI {{ $siswa['kelas'] }}<br>
                     POLRI {{ $siswa['kelas'] }} <br>
+
                 </div>
             </div>
 
