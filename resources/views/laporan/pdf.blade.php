@@ -120,8 +120,7 @@
                     Pangkat/NRP/NIP : {{ $siswa['nip'] }}<br>
                     Nama Dik : {{ $siswa['jurusan'] }}<br>
                     PNS POLRI {{ $siswa['kelas'] }}<br>
-                    POLRI {{ $siswa['kelas'] }} - {{ $siswa['tahun'] }} <br>
-                    WAKTU PENILAIAN : {{ $siswa['progress'] }}
+                    POLRI {{ $siswa['kelas'] }} <br>
                 </div>
             </div>
 
@@ -143,21 +142,22 @@
                     <tr>
                         <td>I.</td>
                         <td>KEPRIBADIAN</td>
-                        <td>{{ number_format(floatval(str_replace(',', '.', $siswa['kepribadian'])), 2, ',', '.') }}
+                        <td>{{ number_format(floatval(str_replace(',', '.', $siswa['NILAI RATA-RATA MENTAL'])), 2, ',', '.') }}
                         </td>
-                        <td>{{ ucwords(terbilang($siswa['kepribadian'])) }}</td>
+                        <td>{{ ucwords(terbilang($siswa['NILAI RATA-RATA MENTAL'])) }}</td>
                     </tr>
                     <tr>
                         <td>II.</td>
                         <td>INTELEK</td>
-                        <td>{{ number_format(floatval(str_replace(',', '.', $siswa['intelek'])), 2, ',', '.') }}</td>
-                        <td>{{ ucwords(terbilang($siswa['intelek'])) }}</td>
+                        <td>{{ number_format(floatval(str_replace(',', '.', $siswa['NILAI RATA-RATA AKADEMIK'])), 2, ',', '.') }}
+                        </td>
+                        <td>{{ ucwords(terbilang($siswa['NILAI RATA-RATA AKADEMIK'])) }}</td>
                     </tr>
                     <tr>
                         <td colspan="2"><strong>NILAI AKHIR</strong></td>
-                        <td><strong>{{ number_format(floatval(str_replace(',', '.', $siswa['rata_rata'])), 2, ',', '.') }}</strong>
+                        <td><strong>{{ number_format(floatval(str_replace(',', '.', $siswa['Nilai Akhir'])), 2, ',', '.') }}</strong>
                         </td>
-                        <td><strong>{{ ucwords(terbilang($siswa['rata_rata'])) }}</strong></td>
+                        <td><strong>{{ ucwords(terbilang($siswa['Nilai Akhir'])) }}</strong></td>
                     </tr>
                 </tbody>
             </table>

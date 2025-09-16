@@ -45,8 +45,6 @@ class PenilaianTemplateExport implements FromCollection, WithHeadings, WithStyle
             'KATEGORI NILAI',
             'WAKTU PENILAIAN',
             'NILAI',
-            'NILAI INTELEK',
-            'NILAI PENGETAHUAN'
         ];
     }
 
@@ -62,8 +60,7 @@ class PenilaianTemplateExport implements FromCollection, WithHeadings, WithStyle
             'D' => 20,  // KATEGORI NILAI
             'E' => 18,  // WAKTU PENILAIAN
             'F' => 15,  // NILAI
-            'G' => 18,  // NILAI INTELEK
-            'H' => 20,  // NILAI PENGETAHUAN
+
         ];
     }
 
@@ -109,7 +106,7 @@ class PenilaianTemplateExport implements FromCollection, WithHeadings, WithStyle
     private function setupWorksheet($sheet)
     {
         // Karena kolom NO dihapus, range header menyesuaikan dari A sampai H
-        $headerRange = 'A1:H1';
+        $headerRange = 'A1:F1';
 
         // Border untuk header
         $sheet->getStyle($headerRange)->applyFromArray([
@@ -165,11 +162,7 @@ class PenilaianTemplateExport implements FromCollection, WithHeadings, WithStyle
         // Validasi untuk kolom F (NILAI)
         $this->addNumericValidation($sheet, 'F', 'Nilai');
 
-        // Validasi untuk kolom G (NILAI INTELEK)
-        $this->addNumericValidation($sheet, 'G', 'Nilai Intelek');
 
-        // Validasi untuk kolom H (NILAI PENGETAHUAN)
-        $this->addNumericValidation($sheet, 'H', 'Nilai Pengetahuan');
     }
 
     private function addNamaDropdownValidation($sheet, $column, $endRow)

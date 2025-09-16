@@ -137,8 +137,6 @@ class PenilaianController extends Controller
             'id_pelajaran' => 'required',
             'id_kategori_penilaian' => 'required',
             'nilai' => 'required',
-            'kepribadian' => 'required',
-            'intelek' => 'required',
             'progress' => 'required'
         ]);
 
@@ -190,8 +188,7 @@ class PenilaianController extends Controller
             'id_pelajaran' => 'required',
             'id_kategori_penilaian' => 'required',
             'nilai' => 'required',
-             'kepribadian' => 'required',
-            'intelek' => 'required',
+
             'progress' => 'required'
         ]);
 

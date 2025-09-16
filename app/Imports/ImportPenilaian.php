@@ -75,16 +75,14 @@ class ImportPenilaian implements ToCollection, WithHeadingRow, WithCalculatedFor
 
                 // Sanitisasi angka (dukung koma sebagai desimal)
                 $nilaiStr = isset($row['nilai']) ? (is_string($row['nilai']) ? str_replace([','], ['.'], trim($row['nilai'])) : $row['nilai']) : null;
-                $nilaiIntelekStr = isset($row['nilai_intelek']) ? (is_string($row['nilai_intelek']) ? str_replace([','], ['.'], trim($row['nilai_intelek'])) : $row['nilai_intelek']) : null;
-                $nilaiPengetahuanStr = isset($row['nilai_pengetahuan']) ? (is_string($row['nilai_pengetahuan']) ? str_replace([','], ['.'], trim($row['nilai_pengetahuan'])) : $row['nilai_pengetahuan']) : null;
+
+
 
                 $batch[] = [
                     'id_siswa'              => $idSiswa,
                     'id_pelajaran'          => $idMapel,
                     'id_kategori_penilaian' => $idKategori,
                     'nilai'                 => ($nilaiStr !== null && $nilaiStr !== '') ? (float) $nilaiStr : null,
-                    'kepribadian'           => ($nilaiIntelekStr !== null && $nilaiIntelekStr !== '') ? (float) $nilaiIntelekStr : null,
-                    'intelek'               => ($nilaiPengetahuanStr !== null && $nilaiPengetahuanStr !== '') ? (float) $nilaiPengetahuanStr : null,
                     'progress'              => isset($row['waktu_penilaian']) ? $row['waktu_penilaian'] : null,
                 ];
 
